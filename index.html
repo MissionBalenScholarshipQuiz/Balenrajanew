@@ -55,6 +55,11 @@
         .nav-button-notify::after { content: ''; position: absolute; top: 0.5rem; right: 0.5rem; width: 8px; height: 8px; border-radius: 50%; background-color: #ef4444; border: 1px solid white; }
         @keyframes confetti-fall { 0% { transform: translateY(-100%) rotateZ(0deg); } 100% { transform: translateY(100vh) rotateZ(720deg); } }
         .confetti { position: absolute; width: 10px; height: 10px; opacity: 0.7; animation: confetti-fall 5s linear infinite; }
+        /* Styles for fullscreen quiz viewer */
+        .fullscreen-quiz-viewer { position: fixed; inset: 0; z-index: 2000; background-color: #111827; display: flex; flex-direction: column; animation: fadeIn 0.3s ease; }
+        .fullscreen-quiz-viewer .header { padding: 1rem 1.5rem; background: #1f2937; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #374151; }
+        .fullscreen-quiz-viewer .header h3 { font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .fullscreen-quiz-viewer iframe { flex-grow: 1; border: none; }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-slate-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
@@ -114,13 +119,12 @@
             { day: 35, subject: "Scholarship", title: "Scholarship Exam Prep", link: "https://ganeshdahal-hue.github.io/balenscholarshipp/", isPremium: true },
             { day: 36, subject: "Scholarship", title: "Scholarship Mastery", link: "https://ganeshdahal-hue.github.io/balenscholarships/", isPremium: true }
         ],
-        // ADDED a new 'quizzes' property for the Test section
       quizzes: {
         "Science": {
             title: "Science Quizzes",
             icon: "fa-solid fa-flask",
             chapters: {
-                "Scientific Study": {
+              "Scientific Study": {
   questions: [
     { question: "How many types of variables are there?", options: ["3", "4", "5", "6"], correctAnswer: "4" },
     { question: "The variable that can be controlled while doing the experiment is called:", options: ["Independent", "Controlled", "Dependent", "Constant"], correctAnswer: "Controlled" },
@@ -1653,15 +1657,68 @@
             }
         },
         "English": {
-            title: "MasterGrammar",
+            title: "English Quizzes",
+            icon: "fa-solid fa-spell-check",
+            chapters: {
+                "Articles": {
+                    questions: [
+                        { question: "I saw ___ eagle in the sky.", options: ["a", "an", "the", "no article"], correctAnswer: "an" },
+                        { question: "She is ___ best student in the class.", options: ["a", "an", "the", "no article"], correctAnswer: "the" },
+                        { question: "He is ___ honest man.", options: ["a", "an", "the", "no article"], correctAnswer: "an" },
+                    ]
+                },
+                "Prepositions": {
+                    questions: [
+                        { question: "The cat is sitting ___ the table.", options: ["on", "in", "at", "with"], correctAnswer: "on" },
+                        { question: "He is afraid ___ dogs.", options: ["of", "from", "with", "by"], correctAnswer: "of" },
+                    ]
+                },
+                "Tenses": {
+                    questions: [
+                        { question: "She ___ to school every day.", options: ["go", "goes", "is going", "went"], correctAnswer: "goes" },
+                        { question: "They ___ playing football now.", options: ["are", "is", "was", "were"], correctAnswer: "are" },
+                    ]
+                }
+            }
+        },
+        "Maths": {
+            title: "Maths Quizzes",
             icon: "fa-solid fa-calculator",
-            questions: [
-                { question: "What is the value of Pi (to two decimal places)?", options: ["3.12", "3.14", "3.16", "3.18"], correctAnswer: "3.14" },
-                { question: "Area of a square with side length 5?", options: ["20", "25", "30", "15"], correctAnswer: "25" },
-            ]
+            chapters: {
+                "Algebra": {
+                    questions: [
+                        { question: "What is the value of x if 2x + 3 = 7?", options: ["1", "2", "3", "4"], correctAnswer: "2" },
+                        { question: "Factorize x² - 4.", options: ["(x-2)(x-2)", "(x+2)(x+2)", "(x-2)(x+2)", "(x-4)(x+1)"], correctAnswer: "(x-2)(x+2)" },
+                    ]
+                },
+                "Geometry": {
+                    questions: [
+                        { question: "What is the sum of angles in a triangle?", options: ["90°", "180°", "270°", "360°"], correctAnswer: "180°" },
+                        { question: "What is the area of a circle with radius 'r'?", options: ["πr", "2πr", "πr²", "2πr²"], correctAnswer: "πr²" },
+                    ]
+                }
+            }
+        },
+        "GK": {
+            title: "GK Quizzes",
+            icon: "fa-solid fa-globe",
+            chapters: {
+                "World Capitals": {
+                    questions: [
+                        { question: "What is the capital of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Perth"], correctAnswer: "Canberra" },
+                        { question: "What is the capital of Japan?", options: ["Kyoto", "Osaka", "Tokyo", "Hiroshima"], correctAnswer: "Tokyo" },
+                    ]
+                },
+                "Famous Inventions": {
+                    questions: [
+                        { question: "Who invented the telephone?", options: ["Thomas Edison", "Alexander Graham Bell", "Isaac Newton", "Albert Einstein"], correctAnswer: "Alexander Graham Bell" },
+                        { question: "Who is credited with the invention of the light bulb?", options: ["Nikola Tesla", "Thomas Edison", "Benjamin Franklin", "Marie Curie"], correctAnswer: "Thomas Edison" },
+                    ]
+                }
+            }
         },
       },
-        resources: [
+            resources: [
             { category: "Premium Materials", items: [
                 { title: "Bridge Course Book", link: "https://drive.google.com/file/d/1Q1i4sf6BStnIt4XgZRuLmPk3fL3AHx7x/view?usp=drive_link", tags: ['book', 'core'] },
                 { title: "Advance Mathematics Book", link: "https://drive.google.com/file/d/1DpIqrtanBnn5cWdXPCY6c18NdtnwKGRl/view?usp=sharing", tags: ['book', 'math'] },
@@ -1764,30 +1821,112 @@
         ],
         entertainment: {
             brainTeasers: [
-                { question: "Which planet is known as the Red Planet?", options: ["Earth", "Mars", "Jupiter", "Saturn"], correctAnswer: "Mars" },
-                { question: "What is the capital of France?", options: ["London", "Berlin", "Paris", "Madrid"], correctAnswer: "Paris" },
-                { question: "What is H2O in chemistry?", options: ["Hydrogen", "Oxygen", "Water", "Salt"], correctAnswer: "Water" },
-                { question: "Which animal is known as the 'King of the Jungle'?", options: ["Tiger", "Elephant", "Lion", "Bear"], correctAnswer: "Lion" },
-                { question: "How many continents are there in the world?", options: ["5", "6", "7", "8"], correctAnswer: "7" },
-                { question: "What is the largest mammal in the world?", options: ["Elephant", "Blue Whale", "Giraffe", "Shark"], correctAnswer: "Blue Whale" },
-                { question: "Who wrote 'Romeo and Juliet'?", options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"], correctAnswer: "William Shakespeare" },
-                { question: "What is the square root of 81?", options: ["7", "8", "9", "10"], correctAnswer: "9" },
-                { question: "In which country are the Pyramids of Giza located?", options: ["Greece", "Italy", "Egypt", "Mexico"], correctAnswer: "Egypt" },
-                { question: "What gas do plants absorb from the atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correctAnswer: "Carbon Dioxide" }
+                {question: "Which law states that pressure exerted in a confined incompressible fluid is transmitted equally in all directions?", options: ["Archimedes' Principle", "Newton's Law", "Pascal's Law", "Hooke's Law"], correctAnswer: "Pascal's Law"},{question: "What is the standard unit of Power?", options: ["Joule", "Watt", "Newton", "Pascal"], correctAnswer: "Watt"},{question: "A dynamo is a device which converts:", options: ["Mechanical energy into electrical energy", "Electrical energy into mechanical energy", "Chemical energy into electrical energy", "Solar energy into electrical energy"], correctAnswer: "Mechanical energy into electrical energy"},{question: "Where should an object be placed in front of a concave mirror to get a real, inverted, and same-sized image?", options: ["At the focus (F)", "At the center of curvature (C)", "Between F and C", "Beyond C"], correctAnswer: "At the center of curvature (C)"},{question: "The splitting of white light into its constituent colors is known as:", options: ["Reflection", "Refraction", "Dispersion", "Diffraction"], correctAnswer: "Dispersion"},{question: "Sound waves cannot travel through:", options: ["Solid", "Liquid", "Gas", "Vacuum"], correctAnswer: "Vacuum"},{question: "The heating element in an electric heater is usually made of:", options: ["Copper", "Tungsten", "Nichrome", "Aluminum"], correctAnswer: "Nichrome"},{question: "1 Kilowatt-hour (kWh) is the commercial unit of:", options: ["Power", "Force", "Electrical Energy", "Current"], correctAnswer: "Electrical Energy"},{question: "A transformer works on the principle of:", options: ["Self Induction", "Mutual Induction", "Generator Effect", "Motor Effect"], correctAnswer: "Mutual Induction"},{question: "What is the frequency of the alternating current (AC) supplied in Nepal?", options: ["60 Hz", "50 Hz", "100 Hz", "120 Hz"], correctAnswer: "50 Hz"},{question: "The acceleration due to gravity on the Moon is approximately how many times that on the Earth?", options: ["1/4th", "1/6th", "1/8th", "1/10th"], correctAnswer: "1/6th"},{question: "Which gas is produced when a dilute acid reacts with a metal like zinc?", options: ["Oxygen", "Carbon Dioxide", "Hydrogen", "Nitrogen"], correctAnswer: "Hydrogen"},{question: "What is the chemical formula for common salt?", options: ["H2O", "CO2", "NaCl", "HCl"], correctAnswer: "NaCl"},{question: "Which of the following is a noble gas?", options: ["Oxygen", "Hydrogen", "Nitrogen", "Argon"], correctAnswer: "Argon"},{question: "The process of coating a layer of zinc on iron to prevent rusting is called:", options: ["Electroplating", "Galvanization", "Anodizing", "Tinning"], correctAnswer: "Galvanization"},{question: "The main constituent of natural gas is:", options: ["Methane", "Ethane", "Butane", "Propane"], correctAnswer: "Methane"},{question: "A blue litmus paper turns into which color in an acidic solution?", options: ["Green", "Yellow", "Red", "Remains Blue"], correctAnswer: "Red"},{question: "The Modern Periodic Table is arranged based on the:", options: ["Atomic Mass", "Atomic Number", "Number of Neutrons", "Mass Number"], correctAnswer: "Atomic Number"},{question: "Which metal is liquid at room temperature?", options: ["Sodium", "Gold", "Mercury", "Calcium"], correctAnswer: "Mercury"},{question: "The chemical name for baking soda is:", options: ["Sodium Carbonate", "Sodium Bicarbonate", "Calcium Carbonate", "Sodium Chloride"], correctAnswer: "Sodium Bicarbonate"},{question: "What is the pH value of pure water?", options: ["0", "7", "14", "1"], correctAnswer: "7"},{question: "Brass is an alloy of:", options: ["Copper and Tin", "Copper and Zinc", "Iron and Carbon", "Aluminum and Magnesium"], correctAnswer: "Copper and Zinc"},{question: "Which organelle is known as the 'powerhouse of the cell'?", options: ["Nucleus", "Ribosome", "Mitochondrion", "Lysosome"], correctAnswer: "Mitochondrion"},{question: "Which blood group is considered the 'universal donor'?", options: ["A", "B", "AB", "O"], correctAnswer: "O"},{question: "The process by which green plants make their own food is called:", options: ["Respiration", "Photosynthesis", "Transpiration", "Digestion"], correctAnswer: "Photosynthesis"},{question: "Which part of the human brain is responsible for controlling balance and posture?", options: ["Cerebrum", "Cerebellum", "Medulla Oblongata", "Thalamus"], correctAnswer: "Cerebellum"},{question: "Deficiency of which vitamin causes the disease 'Scurvy'?", options: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correctAnswer: "Vitamin C"},{question: "What is the functional unit of the kidney?", options: ["Neuron", "Alveoli", "Nephron", "Villi"], correctAnswer: "Nephron"},{question: "Which hormone regulates the blood sugar level in the human body?", options: ["Thyroxine", "Adrenaline", "Insulin", "Estrogen"], correctAnswer: "Insulin"},{question: "Which gland in the human body is known as the 'master gland'?", options: ["Thyroid Gland", "Adrenal Gland", "Pancreas", "Pituitary Gland"], correctAnswer: "Pituitary Gland"},{question: "What does DNA stand for?", options: ["Deoxyribonucleic Acid", "Diribonucleic Acid", "Deoxyribo Natural Acid", "Deoxyribo Nucleic Alkali"], correctAnswer: "Deoxyribonucleic Acid"},{question: "The green pigment found in plants that is essential for photosynthesis is called:", options: ["Xanthophyll", "Chlorophyll", "Carotene", "Hemoglobin"], correctAnswer: "Chlorophyll"},{question: "Gregor Mendel is known as the father of:", options: ["Genetics", "Evolution", "Taxonomy", "Anatomy"], correctAnswer: "Genetics"},{question: "Asexual reproduction in yeast takes place through:", options: ["Fission", "Fragmentation", "Budding", "Spore formation"], correctAnswer: "Budding"},{question: "Which planet in our solar system is most famous for its prominent rings?", options: ["Jupiter", "Uranus", "Neptune", "Saturn"], correctAnswer: "Saturn"},{question: "Halley's Comet is a short-period comet visible from Earth approximately every:", options: ["56 years", "66 years", "76 years", "86 years"], correctAnswer: "76 years"},{question: "My brother is very good ___ mathematics.", options: ["in", "at", "on", "for"], correctAnswer: "at"},{question: "I am fond ___ classical music.", options: ["of", "in", "with", "for"], correctAnswer: "of"},{question: "He died ___ cholera last year.", options: ["by", "from", "with", "of"], correctAnswer: "of"},{question: "She has been working here ___ 2015.", options: ["for", "since", "from", "at"], correctAnswer: "since"},{question: "The exam will be held ___ the first week of March.", options: ["on", "at", "in", "by"], correctAnswer: "in"},{question: "I ___ to Pokhara last month.", options: ["go", "have gone", "went", "am going"], correctAnswer: "went"},{question: "Look! The children ___ in the garden.", options: ["play", "are playing", "played", "have played"], correctAnswer: "are playing"},{question: "She ___ her homework already.", options: ["finish", "finished", "has finished", "is finishing"], correctAnswer: "has finished"},{question: "Water ___ at 100° Celsius at sea level.", options: ["boil", "boils", "is boiling", "has boiled"], correctAnswer: "boils"},{question: "By this time tomorrow, we ___ our destination.", options: ["will reach", "reach", "will have reached", "are reaching"], correctAnswer: "will have reached"},{question: "He is ___ honest employee.", options: ["a", "an", "the", "no article"], correctAnswer: "an"},{question: "___ Himalayas are to the north of Nepal.", options: ["A", "An", "The", "No article"], correctAnswer: "The"},{question: "My sister is studying at ___ university.", options: ["a", "an", "the", "no article"], correctAnswer: "a"},{question: "I saw ___ one-eyed man crossing the road.", options: ["a", "an", "the", "some"], correctAnswer: "a"},{question: "She is a very talented singer, ___?", options: ["is she", "isn't she", "was she", "wasn't she"], correctAnswer: "isn't she"},{question: "They haven't arrived yet, ___?", options: ["did they", "didn't they", "have they", "haven't they"], correctAnswer: "have they"},{question: "Let's go to the party, ___?", options: ["shall we", "will we", "don't we", "do we"], correctAnswer: "shall we"},{question: "I am a little late, ___?", options: ["am I", "amn't I", "are I", "aren't I"], correctAnswer: "aren't I"},{question: "He hardly does any work, ?", options: ["does he", "doesn't he", "is he", "isn't he"], correctAnswer: "does he"},{question: "What is the passive form of 'The cat killed the mouse'?", options: ["The mouse was killed by the cat.", "The mouse is killed by the cat.", "The cat was killed by the mouse.", "The mouse has been killed by the cat."], correctAnswer: "The mouse was killed by the cat."},{question: "What is the active form of 'The letter was written by her'?", options: ["She is writing the letter.", "She has written the letter.", "She wrote the letter.", "She writes the letter."], correctAnswer: "She wrote the letter."},{question: "Change into passive voice: 'Someone has stolen my watch.'", options: ["My watch was stolen.", "My watch is stolen by someone.", "My watch has been stolen.", "My watch had been stolen."], correctAnswer: "My watch has been stolen."},{question: "What is the passive form of 'Who taught you grammar'?", options: ["By who you were taught grammar?", "By whom were you taught grammar?", "By whom was you taught grammar?", "Grammar was taught by whom?"], correctAnswer: "By whom were you taught grammar?"},{question: "Change into indirect speech: He said, 'I am working hard.'", options: ["He said that he is working hard.", "He said that I was working hard.", "He said that he was working hard.", "He says that he was working hard."], correctAnswer: "He said that he was working hard."},{question: "Change into indirect speech: She said to me, 'Where do you live?'", options: ["She asked me where I lived.", "She asked me where did I live.", "She told me where I lived.", "She asked me where I live."], correctAnswer: "She asked me where I lived."},{question: "The teacher said, 'The Earth is round.' Change into indirect speech.", options: ["The teacher said that the Earth was round.", "The teacher said that the Earth is round.", "The teacher told that the Earth was round.", "The teacher asked if the Earth is round."], correctAnswer: "The teacher said that the Earth is round."},{question: "He is slow, ___ he is steady.", options: ["and", "or", "but", "so"], correctAnswer: "but"},{question: "Wait for me ___ I return.", options: ["because", "until", "unless", "if"], correctAnswer: "until"},{question: " he worked hard, he could not pass the exam.", options: ["Because", "As", "Though", "So"], correctAnswer: "Though"},{question: "The news from the battlefield ___ not encouraging.", options: ["are", "is", "were", "have"], correctAnswer: "is"},{question: "Each of the students ___ given a certificate.", options: ["were", "was", "have been", "are"], correctAnswer: "was"},{question: "Neither you nor your sister ___ be blamed.", options: ["should", "can", "is to", "are to"], correctAnswer: "is to"},{question: "Bread and butter ___ my favorite breakfast.", options: ["is", "are", "were", "have"], correctAnswer: "is"},{question: "What is the name of the highest mountain in the world, located in Nepal?", options: ["K2", "Kanchanjunga", "Sagarmatha (Mt. Everest)", "Lhotse"], correctAnswer: "Sagarmatha (Mt. Everest)"},{question: "Which is the largest lake in Nepal by surface area?", options: ["Fewa Lake", "Rara Lake", "Shey Phoksundo Lake", "Begnas Lake"], correctAnswer: "Rara Lake"},{question: "According to the Constitution of Nepal (2015), how many provinces are there in Nepal?", options: ["5", "6", "7", "8"], correctAnswer: "7"},{question: "In which province is the capital city, Kathmandu, located?", options: ["Gandaki Province", "Province No. 1", "Bagmati Province", "Lumbini Province"], correctAnswer: "Bagmati Province"},{question: "What is the lowest point of Nepal?", options: ["Biratnagar", "Janakpur", "Kechana Kalan", "Birgunj"], correctAnswer: "Kechana Kalan"},{question: "Which National Park in Nepal is a UNESCO World Heritage site renowned for the One-horned Rhinoceros?", options: ["Sagarmatha National Park", "Chitwan National Park", "Bardia National Park", "Langtang National Park"], correctAnswer: "Chitwan National Park"},{question: "Which river, originating in Nepal, is known as the 'Sorrow of Bihar' in India?", options: ["Gandaki", "Karnali", "Bagmati", "Koshi"], correctAnswer: "Koshi"},{question: "Which is the deepest lake of Nepal?", options: ["Rara Lake", "Tilicho Lake", "Shey Phoksundo Lake", "Gosaikunda"], correctAnswer: "Shey Phoksundo Lake"},{question: "The city of Pokhara is famous for the Phewa Lake, which is also called:", options: ["Baikal", "Baidam Tal", "Rupa Tal", "Begnas Tal"], correctAnswer: "Baidam Tal"},{question: "Who is credited with the unification of modern Nepal?", options: ["Ram Shah", "Pratap Malla", "Prithvi Narayan Shah", "Jang Bahadur Rana"], correctAnswer: "Prithvi Narayan Shah"},{question: "The infamous 'Kot Parva' (Kot Massacre) of 1846 AD led to the rise of:", options: ["The Shah Dynasty", "The Malla Dynasty", "The Rana Regime", "The Panchayat System"], correctAnswer: "The Rana Regime"},{question: "Who was the first Rana Prime Minister of Nepal?", options: ["Chandra Shumsher", "Bhimsen Thapa", "Jang Bahadur Rana", "Dev Shumsher"], correctAnswer: "Jang Bahadur Rana"},{question: "When was democracy established for the first time in Nepal, ending the 104-year-long Rana rule?", options: ["2007 BS (1951 AD)", "2017 BS (1960 AD)", "2046 BS (1990 AD)", "2063 BS (2006 AD)"], correctAnswer: "2007 BS (1951 AD)"},{question: "Gautam Buddha, the founder of Buddhism, was born in which place in Nepal?", options: ["Kathmandu", "Patan", "Janakpur", "Lumbini"], correctAnswer: "Lumbini"},{question: "Who built the famous Krishna Mandir in Patan Durbar Square?", options: ["Pratap Malla", "Jaya Prakash Malla", "Siddhi Narsingh Malla", "Bhupatindra Malla"], correctAnswer: "Siddhi Narsingh Malla"},{question: "Who was the last Malla king of Kathmandu?", options: ["Ranjit Malla", "Tej Narsingh Malla", "Jaya Prakash Malla", "Pratap Malla"], correctAnswer: "Jaya Prakash Malla"},{question: "Who was the first President of the Federal Democratic Republic of Nepal?", options: ["Girija Prasad Koirala", "Pushpa Kamal Dahal", "Dr. Ram Baran Yadav", "Bidhya Devi Bhandari"], correctAnswer: "Dr. Ram Baran Yadav"},{question: "Who is the writer of the famous Nepali epic 'Muna Madan'?", options: ["Bhanubhakta Acharya", "Laxmi Prasad Devkota", "Parijat", "Balkrishna Sama"], correctAnswer: "Laxmi Prasad Devkota"},{question: "What is the national flower of Nepal?", options: ["Lotus", "Marigold", "Rhododendron (Lali Gurans)", "Jasmine"], correctAnswer: "Rhododendron (Lali Gurans)"},{question: "What is the national animal of Nepal?", options: ["Tiger", "Yak", "Cow", "One-horned Rhino"], correctAnswer: "Cow"},{question: "What is the national bird of Nepal?", options: ["Peacock", "Spiny Babbler", "Himalayan Monal (Danphe)", "Eagle"], correctAnswer: "Himalayan Monal (Danphe)"},{question: "The Swayambhunath Stupa, a UNESCO World Heritage Site in Kathmandu, is also popularly known as:", options: ["The Monkey Temple", "The Golden Temple", "The White Stupa", "The Peace Pagoda"], correctAnswer: "The Monkey Temple"},{question: "When was the current Constitution of Nepal promulgated?", options: ["2063 BS, Falgun 1", "2072 BS, Asoj 3", "2047 BS, Kartik 23", "2015 BS, Jestha 15"], correctAnswer: "2072 BS, Asoj 3"},{question: "What is the official currency of Nepal?", options: ["Taka", "Indian Rupee", "Nepalese Rupee", "Ngultrum"], correctAnswer: "Nepalese Rupee"},{question: "The living goddess of Nepal is known as the:", options: ["Devi", "Taleju", "Kumari", "Bhrikuti"], correctAnswer: "Kumari"},{question: "How many members are there in the House of Representatives (Pratinidhi Sabha) of Nepal?", options: ["59", "275", "334", "165"], correctAnswer: "275"},{question: "Who is considered the first martyr ('shahid') of Nepal?", options: ["Shukra Raj Shastri", "Ganga Lal Shrestha", "Lakhan Thapa", "Dashrath Chand"], correctAnswer: "Lakhan Thapa"},{question: "Who was the first elected Prime Minister of Nepal?", options: ["Tanka Prasad Acharya", "Matrika Prasad Koirala", "Bishweshwar Prasad Koirala", "Kirtinidhi Bista"], correctAnswer: "Bishweshwar Prasad Koirala"}
+                
             ],
             motivationalQuotes: [
-                { quote: "The secret of getting ahead is getting started.", author: "Mark Twain" },
-                { quote: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-                { quote: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-                { quote: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" }
+                { "quote": "The secret of getting ahead is getting started.", "author": "Mark Twain" },
+    { "quote": "The only way to do great work is to love what you do.", "author": "Steve Jobs" },
+    { "quote": "Believe you can and you're halfway there.", "author": "Theodore Roosevelt" },
+    { "quote": "Strive not to be a success, but rather to be of value.", "author": "Albert Einstein" },
+    { "quote": "The future belongs to those who believe in the beauty of their dreams.", "author": "Eleanor Roosevelt" },
+    { "quote": "I have not failed. I've just found 10,000 ways that won't work.", "author": "Thomas A. Edison" },
+    { "quote": "Success is not final, failure is not fatal: it is the courage to continue that counts.", "author": "Winston Churchill" },
+    { "quote": "The journey of a thousand miles begins with a single step.", "author": "Lao Tzu" },
+    { "quote": "You miss 100% of the shots you don't take.", "author": "Wayne Gretzky" },
+    { "quote": "Whether you think you can, or you think you can't – you're right.", "author": "Henry Ford" },
+    { "quote": "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time.", "author": "Thomas A. Edison" },
+    { "quote": "An investment in knowledge pays the best interest.", "author": "Benjamin Franklin" },
+    { "quote": "The beautiful thing about learning is that no one can take it away from you.", "author": "B.B. King" },
+    { "quote": "It is impossible to live without failing at something, unless you live so cautiously that you might as well not have lived at all - in which case, you fail by default.", "author": "J.K. Rowling" },
+    { "quote": "Education is the most powerful weapon which you can use to change the world.", "author": "Nelson Mandela" },
+    { "quote": "Success is the sum of small efforts, repeated day-in and day-out.", "author": "Robert Collier" },
+    { "quote": "I find that the harder I work, the more luck I seem to have.", "author": "Thomas Jefferson" },
+    { "quote": "It does not matter how slowly you go as long as you do not stop.", "author": "Confucius" },
+    { "quote": "Your time is limited, don't waste it living someone else's life.", "author": "Steve Jobs" },
+    { "quote": "The expert in anything was once a beginner.", "author": "Helen Hayes" },
+    { "quote": "Live as if you were to die tomorrow. Learn as if you were to live forever.", "author": "Mahatma Gandhi" },
+    { "quote": "The man who moves a mountain begins by carrying away small stones.", "author": "Confucius" },
+    { "quote": "The only person you are destined to become is the person you decide to be.", "author": "Ralph Waldo Emerson" },
+    { "quote": "Genius is one percent inspiration and ninety-nine percent perspiration.", "author": "Thomas A. Edison" },
+    { "quote": "Our greatest glory is not in never falling, but in rising every time we fall.", "author": "Confucius" },
+    { "quote": "If you are not willing to learn, no one can help you. If you are determined to learn, no one can stop you.", "author": "Zig Ziglar" },
+    { "quote": "Don't watch the clock; do what it does. Keep going.", "author": "Sam Levenson" },
+    { "quote": "I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.", "author": "Michael Jordan" },
+    { "quote": "Procrastination is the thief of time.", "author": "Edward Young" },
+    { "quote": "The way to get started is to quit talking and begin doing.", "author": "Walt Disney" },
+    { "quote": "There are no shortcuts to any place worth going.", "author": "Beverly Sills" },
+    { "quote": "Fall seven times, stand up eight.", "author": "Japanese Proverb" },
+    { "quote": "The mind is not a vessel to be filled, but a fire to be kindled.", "author": "Plutarch" },
+    { "quote": "You can't use up creativity. The more you use, the more you have.", "author": "Maya Angelou" },
+    { "quote": "If you hear a voice within you say 'you cannot paint,' then by all means paint, and that voice will be silenced.", "author": "Vincent Van Gogh" },
+    { "quote": "Do what you can, with what you have, where you are.", "author": "Theodore Roosevelt" },
+    { "quote": "The two most important days in your life are the day you are born and the day you find out why.", "author": "Mark Twain" },
+    { "quote": "The best way to predict your future is to create it.", "author": "Abraham Lincoln" },
+    { "quote": "You have to be odd to be number one.", "author": "Dr. Seuss" },
+    { "quote": "Excellence is not an act, but a habit.", "author": "Aristotle" },
+    { "quote": "A year from now you may wish you had started today.", "author": "Karen Lamb" },
+    { "quote": "It's not about having time. It's about making time.", "author": "Unknown" },
+    { "quote": "The only true wisdom is in knowing you know nothing.", "author": "Socrates" },
+    { "quote": "Motivation is what gets you started. Habit is what keeps you going.", "author": "Jim Rohn" },
+    { "quote": "Tell me and I forget. Teach me and I remember. Involve me and I learn.", "author": "Benjamin Franklin" },
+    { "quote": "Don't let what you cannot do interfere with what you can do.", "author": "John Wooden" },
+    { "quote": "You don't have to be great to start, but you have to start to be great.", "author": "Zig Ziglar" },
+    { "quote": "A person who never made a mistake never tried anything new.", "author": "Albert Einstein" },
+    { "quote": "The purpose of our lives is to be happy.", "author": "Dalai Lama" },
+    { "quote": "Learning never exhausts the mind.", "author": "Leonardo da Vinci" }
             ],
             riddles: [
-                { riddle: "I speak without a mouth and hear without ears. What am I?", answers: ["an echo", "echo"] },
-                { riddle: "What has an eye, but cannot see?", answers: ["a needle", "needle"] },
-                { riddle: "What has keys, but opens no locks?", answers: ["a piano", "piano", "a keyboard", "keyboard"] },
-                { riddle: "What comes once in a minute, twice in a moment, but never in a thousand years?", answers: ["the letter m", "letter m", "m"] },
-                { riddle: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?", answers: ["a map", "map"] },
-                { riddle: "What has to be broken before you can use it?", answers: ["an egg", "egg"] }
+                 { "riddle": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", "answers": ["an echo", "echo"] },
+    { "riddle": "What has an eye, but cannot see?", "answers": ["a needle", "needle"] },
+    { "riddle": "What has keys, but opens no locks? And space, but no room?", "answers": ["a keyboard", "keyboard", "a piano", "piano"] },
+    { "riddle": "What comes once in a minute, twice in a moment, but never in a thousand years?", "answers": ["the letter m", "letter m", "m"] },
+    { "riddle": "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?", "answers": ["a map", "map"] },
+    { "riddle": "What has to be broken before you can use it?", "answers": ["an egg", "egg"] },
+    { "riddle": "I’m tall when I’m young, and I’m short when I’m old. What am I?", "answers": ["a candle", "candle"] },
+    { "riddle": "What is full of holes but still holds water?", "answers": ["a sponge", "sponge"] },
+    { "riddle": "What is always in front of you but can’t be seen?", "answers": ["the future", "future"] },
+    { "riddle": "What has one head, one foot, and four legs?", "answers": ["a bed", "bed"] },
+    { "riddle": "What can you catch, but not throw?", "answers": ["a cold", "cold", "sickness"] },
+    { "riddle": "What has many teeth, but cannot bite?", "answers": ["a comb", "comb"] },
+    { "riddle": "What gets wetter as it dries?", "answers": ["a towel", "towel"] },
+    { "riddle": "I follow you all day long, but disappear when the sun goes down. What am I?", "answers": ["a shadow", "shadow", "your shadow"] },
+    { "riddle": "What has a thumb and four fingers, but is not alive?", "answers": ["a glove", "glove"] },
+    { "riddle": "What building has the most stories?", "answers": ["a library", "library"] },
+    { "riddle": "What invention lets you look right through a wall?", "answers": ["a window", "window"] },
+    { "riddle": "If you have me, you want to share me. If you share me, you haven't kept me. What am I?", "answers": ["a secret", "secret"] },
+    { "riddle": "What goes up but never comes down?", "answers": ["your age", "age"] },
+    { "riddle": "I have no voice, yet I can tell you all the stories in the world. What am I?", "answers": ["a book", "book"] },
+    { "riddle": "What has a face and two hands but no arms or legs?", "answers": ["a clock", "clock"] },
+    { "riddle": "What belongs to you, but other people use it more than you do?", "answers": ["your name", "name"] },
+    { "riddle": "The more you take, the more you leave behind. What are they?", "answers": ["footsteps", "steps"] },
+    { "riddle": "What can travel around the world while staying in a corner?", "answers": ["a stamp", "stamp"] },
+    { "riddle": "I am an odd number. Take away a letter and I become even. What number am I?", "answers": ["seven", "7"] },
+    { "riddle": "What is always coming, but never arrives?", "answers": ["tomorrow"] },
+    { "riddle": "What gets bigger the more you take away?", "answers": ["a hole", "hole"] },
+    { "riddle": "I have no life, but I can die. What am I?", "answers": ["a battery", "battery"] },
+    { "riddle": "What is black when it’s clean and white when it’s dirty?", "answers": ["a chalkboard", "chalkboard", "a blackboard", "blackboard"] },
+    { "riddle": "I can be cracked, made, told, and played. What am I?", "answers": ["a joke", "joke"] },
+    { "riddle": "What has a neck without a head, and a body without legs?", "answers": ["a bottle", "bottle"] },
+    { "riddle": "What runs around the entire yard without moving?", "answers": ["a fence", "fence"] },
+    { "riddle": "I have no wings, but I can fly. I have no eyes, but I can cry. What am I?", "answers": ["a cloud", "cloud"] },
+    { "riddle": "What has a head and a tail, but no body?", "answers": ["a coin", "coin"] },
+    { "riddle": "What can you hold in your left hand but not in your right?", "answers": ["your right elbow", "right elbow"] },
+    { "riddle": "What word is spelled wrong in every dictionary?", "answers": ["wrong"] },
+    { "riddle": "Where does today come before yesterday?", "answers": ["the dictionary", "dictionary"] },
+    { "riddle": "What is something you can break, even if you never pick it up or touch it?", "answers": ["a promise", "promise"] },
+    { "riddle": "What has four wheels and flies?", "answers": ["a garbage truck", "garbage truck"] },
+    { "riddle": "What can you keep after giving it to someone?", "answers": ["your word", "word"] },
+    { "riddle": "What is so fragile that saying its name breaks it?", "answers": ["silence"] },
+    { "riddle": "I shave every day, but my beard stays the same. What am I?", "answers": ["a barber", "barber"] },
+    { "riddle": "What has a mouth, but never speaks?", "answers": ["a river", "river", "a jar", "jar"] },
+    { "riddle": "I have branches, but no fruit, trunk, or leaves. What am I?", "answers": ["a bank", "bank"] },
+    { "riddle": "What goes through cities and fields, but never moves?", "answers": ["a road", "road", "a street", "street"] },
+    { "riddle": "What can you fill a room with, but takes up no space?", "answers": ["light", "sound", "air"] },
+    { "riddle": "Forward I am heavy, but backward I am not. What am I?", "answers": ["ton"] },
+    { "riddle": "What has one end but no beginning, and is the end of all things?", "answers": ["death"] },
+    { "riddle": "What can't be put in a saucepan?", "answers": ["its lid", "the lid"] },
+    { "riddle": "You see me once in June, twice in November, and not at all in May. What am I?", "answers": ["the letter e", "letter e", "e"] }
             ]
         },
         achievementsList: {
@@ -1801,7 +1940,6 @@
             PREMIUM_USER: { id: 'PREMIUM_USER', title: 'Premium Supporter', icon: 'fas fa-star', description: 'Unlock premium access to support the portal.', hasCertificate: true }
         },
     };
-
     // =================================================================================
     // ===== HELPER FUNCTIONS & REUSABLE UI COMPONENTS =====
     // =================================================================================
@@ -1816,7 +1954,7 @@
     // =================================================================================
     // ===== NAME ENTRY SCREEN =====
     // =================================================================================
-    const NameEntryScreen = ({ onNameSet }) => { const [name, setName] = useState(''); const handleSubmit = (e) => { e.preventDefault(); if (name.trim()) { onNameSet(name.trim()); } }; return ( <div className="min-h-screen w-full flex items-center justify-center p-4 bg-slate-900 bg-cover bg-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=2070&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"}}> <div className="w-full max-w-md glassmorphism rounded-2xl p-8 shadow-2xl animate-popIn"> <div className="text-center mb-8"> <img src="https://raw.githubusercontent.com/ganeshdahal-HUE/practicece/6684a6cfa40eda8be7402689857a23575f0b723a/494645815_122099085086862980_1698079942897814974_n.jpg" alt="Logo" className="h-20 w-20 rounded-full shadow-lg mx-auto mb-4 border-2 border-white/50" /> <h1 className="text-3xl font-bold text-white font-serif tracking-tight">Balen Scholarship Prep</h1> <p className="text-white/70 mt-2">Please enter your name to begin.</p> </div> <form onSubmit={handleSubmit} className="space-y-4"> <div className="relative"> <i className="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-white/50"></i> <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Your Full Name" className="w-full pl-12 pr-4 py-3 rounded-lg border-0 bg-white/10 text-white placeholder-white/60 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition" required /> </div> <button type="submit" className="w-full gradient-button text-white font-bold py-3 px-6 rounded-full shadow-lg text-lg uppercase tracking-wider mt-4">Continue</button> </form> </div> </div> ); };
+    const NameEntryScreen = ({ onNameSet }) => { const [name, setName] = useState(''); const handleSubmit = (e) => { e.preventDefault(); if (name.trim()) { onNameSet(name.trim()); } }; return ( <div className="min-h-screen w-full flex items-center justify-center p-4 bg-slate-900 bg-cover bg-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"}}> <div className="w-full max-w-md glassmorphism rounded-2xl p-8 shadow-2xl animate-popIn"> <div className="text-center mb-8"> <img src="https://raw.githubusercontent.com/ganeshdahal-HUE/practicece/6684a6cfa40eda8be7402689857a23575f0b723a/494645815_122099085086862980_1698079942897814974_n.jpg" alt="Logo" className="h-20 w-20 rounded-full shadow-lg mx-auto mb-4 border-2 border-white/50" /> <h1 className="text-3xl font-bold text-white font-serif tracking-tight">Balen Scholarship Prep</h1> <p className="text-white/70 mt-2">Please enter your name to begin.</p> </div> <form onSubmit={handleSubmit} className="space-y-4"> <div className="relative"> <i className="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-white/50"></i> <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Your Full Name" className="w-full pl-12 pr-4 py-3 rounded-lg border-0 bg-white/10 text-white placeholder-white/60 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition" required /> </div> <button type="submit" className="w-full gradient-button text-white font-bold py-3 px-6 rounded-full shadow-lg text-lg uppercase tracking-wider mt-4">Continue</button> </form> </div> </div> ); };
 
     // =================================================================================
     // ===== HEADER & FOOTER =====
@@ -1828,131 +1966,11 @@
     // ===== MODAL COMPONENTS =====
     // =================================================================================
     const PaymentModal = ({ onPaymentSuccess, onClose, userName }) => { const [premiumCode, setPremiumCode] = useState(''); const [isLoading, setIsLoading] = useState(false); const [error, setError] = useState(''); const handleVerify = (e) => { e.preventDefault(); setError(''); const expectedCode = generatePremiumCode(userName); if (premiumCode === expectedCode) { setIsLoading(true); setTimeout(() => { setIsLoading(false); onPaymentSuccess(); }, 1500); } else { setError('Invalid Premium Code. Please check the code received from the admin.'); } }; return ( <div className="overlay"> <div className="modal-box glassmorphism text-white relative"> <button onClick={onClose} className="absolute top-4 right-4 text-white/50 hover:text-white text-2xl font-bold">&times;</button> <h2 className="text-3xl font-extrabold mb-2 font-serif">Unlock Premium Access</h2> <p className="text-white/80 mb-6">Gain instant access to all exclusive features.</p> <div className="text-center bg-green-900/50 border border-green-500/50 rounded-xl p-4 mb-6"> <p className="text-lg">One-Time Payment</p> <p className="text-5xl font-bold text-green-300">Rs. {DATA.premiumPrice}</p> </div> <div className="text-left space-y-4"> <div> <p className="font-bold text-lg mb-1">Step 1: Pay using eSewa</p> <p className="text-white/80">Open your eSewa app and send <span className="font-bold text-white">Rs. {DATA.premiumPrice}</span> to the following eSewa ID:</p> <div className="bg-black/30 p-3 rounded-lg mt-2 text-center text-xl font-mono tracking-widest">{DATA.esewaId}</div> </div> <div> <p className="font-bold text-lg mb-1">Step 2: Activate Your Account</p> <p className="text-white/80">After paying, contact the admin via WhatsApp to get your personal premium code, then enter it below to activate.</p> <a href={`https://wa.me/${DATA.whatsAppContactNumber}?text=${encodeURIComponent(`I have made the payment for the Balen Scholarship Prep Portal premium access. Please provide me with my premium code.`)}`} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 mb-3 bg-green-500 text-white font-bold py-2 px-4 rounded-full text-sm"><i className="fab fa-whatsapp mr-2"></i>Contact Admin for Code</a> <form onSubmit={handleVerify} className="mt-2"> <input type="text" value={premiumCode} onChange={(e) => setPremiumCode(e.target.value)} placeholder="Enter Premium Code from Admin" className="w-full p-3 border-0 rounded-md bg-white/20 placeholder-white/60 text-white focus:ring-2 focus:ring-indigo-400 focus:outline-none" required /> {error && <p className="text-red-400 text-sm mt-2 text-center">{error}</p>} <button type="submit" className="w-full gradient-button text-white font-bold py-3 px-6 rounded-full shadow-lg text-lg mt-4" disabled={isLoading}> {isLoading ? ( <Fragment> <i className="fas fa-spinner fa-spin mr-2"></i>Activating... </Fragment> ) : ( <Fragment> <i className="fas fa-key mr-2"></i>Activate Premium </Fragment> )} </button> </form> </div> </div> </div> </div> ); };
-    const PdfViewerModal = ({ pdfInfo, onClose }) => {
-        if (!pdfInfo || !pdfInfo.url) return null;
-
-        const [isLoading, setIsLoading] = useState(true);
-        const viewerRef = useRef(null); 
-
-        const pdfId = useMemo(() => pdfInfo.title.replace(/\s+/g, '_'), [pdfInfo]);
-
-        const [progressPage, setProgressPage] = useState('');
-        const [savedPage, setSavedPage] = useState(null);
-        const [showSavedConfirmation, setShowSavedConfirmation] = useState(false);
-
-        const getEmbedUrl = useCallback((url, page) => {
-            const fileIdMatch = url.match(/drive\.google\.com\/(?:file\/d\/|drive\/folders\/)([a-zA-Z0-9_-]+)/);
-            if (!fileIdMatch) return null;
-            let embedUrl = `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
-            if (page) {
-                embedUrl += `#page=${page}`;
-            }
-            return embedUrl;
-        }, []);
-        
-        useEffect(() => {
-            const savedPageData = localStorage.getItem(`pdfProgress_${pdfId}`);
-            if (savedPageData) {
-                setSavedPage(savedPageData);
-                setProgressPage(savedPageData);
-            }
-        }, [pdfId]);
-
-        const handleSaveProgress = (e) => {
-            e.preventDefault();
-            localStorage.setItem(`pdfProgress_${pdfId}`, progressPage);
-            setSavedPage(progressPage);
-            setShowSavedConfirmation(true);
-            setTimeout(() => setShowSavedConfirmation(false), 2500);
-        };
-        
-        const handleFullscreen = () => {
-            if (viewerRef.current) {
-                viewerRef.current.requestFullscreen().catch(err => {
-                    console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-                });
-            }
-        };
-
-        const iframeUrl = useMemo(() => getEmbedUrl(pdfInfo.url, savedPage), [pdfInfo.url, savedPage, getEmbedUrl]);
-        const preventContextMenu = (e) => e.preventDefault();
-
-        return (
-            <div className="overlay" onClick={onClose} onContextMenu={preventContextMenu}>
-                <div 
-                    ref={viewerRef}
-                    className="pdf-viewer-modal bg-slate-900 border border-slate-700 animate-popIn" 
-                    onClick={e => e.stopPropagation()}
-                >
-                    {/* Header with Controls */}
-                    <div className="header flex-shrink-0">
-                        <h3 className="truncate pr-4">{pdfInfo.title}</h3>
-                        <div className="flex items-center gap-2">
-                             {/* Bookmark Form */}
-                            <form onSubmit={handleSaveProgress} className="hidden sm:flex items-center gap-2 relative">
-                                <label htmlFor="page-input" className="text-sm text-slate-400">Bookmark Page:</label>
-                                <input 
-                                    id="page-input"
-                                    type="number" 
-                                    value={progressPage} 
-                                    onChange={(e) => setProgressPage(e.target.value)} 
-                                    className="bg-slate-700 rounded-md px-2 py-1 w-20 text-center text-white placeholder-slate-400" 
-                                    placeholder="#"
-                                    required
-                                />
-                                <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-1 px-3 rounded-md">Save</button>
-                                {showSavedConfirmation && <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-popIn">Saved!</div>}
-                            </form>
-                            <button onClick={handleFullscreen} title="Fullscreen" className="bg-white/10 hover:bg-white/20 text-white rounded-full w-8 h-8 flex items-center justify-center">
-                                <i className="fas fa-expand"></i>
-                            </button>
-                            <button onClick={onClose} title="Close" className="close-button text-xl">&times;</button>
-                        </div>
-                    </div>
-
-                    {/* Main PDF Viewer Area */}
-                    <div className="relative flex-grow bg-gray-800">
-                        {isLoading && (
-                            <div className="absolute inset-0 flex flex-col justify-center items-center text-white bg-gray-800/90 backdrop-blur-sm z-10 p-4 text-center">
-                                <i className="fas fa-spinner fa-spin text-4xl mb-6"></i>
-                                <p className="font-bold text-lg">Loading HD Document...</p>
-                                {savedPage && <p className="text-sm text-gray-400 mt-2">Jumping to your bookmark on page {savedPage}...</p>}
-                                
-                                {/* Zooming Instructions */}
-                                <div className="mt-8 bg-indigo-900/50 border border-indigo-500 rounded-lg p-4 max-w-md">
-                                    <h4 className="font-semibold text-indigo-300 flex items-center justify-center gap-2"><i className="fas fa-info-circle"></i> Heads Up!</h4>
-                                    <p className="text-slate-300 text-sm mt-2">
-                                        To **zoom**, print, or go to a page, move your cursor to the **top-right corner** of the document viewer. A toolbar will appear.
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                        <iframe
-                            src={iframeUrl}
-                            onLoad={() => setIsLoading(false)}
-                            className={`w-full h-full border-0 transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-                            title="HD PDF Viewer"
-                            sandbox="allow-scripts allow-same-origin"
-                        ></iframe>
-                    </div>
-                </div>
-            </div>
-        );
-    };
+    const PdfViewerModal = ({ pdfInfo, onClose }) => { if (!pdfInfo || !pdfInfo.url) return null; const [isLoading, setIsLoading] = useState(true); const viewerRef = useRef(null); const pdfId = useMemo(() => pdfInfo.title.replace(/\s+/g, '_'), [pdfInfo]); const [progressPage, setProgressPage] = useState(''); const [savedPage, setSavedPage] = useState(null); const [showSavedConfirmation, setShowSavedConfirmation] = useState(false); const getEmbedUrl = useCallback((url, page) => { const fileIdMatch = url.match(/drive\.google\.com\/(?:file\/d\/|drive\/folders\/)([a-zA-Z0-9_-]+)/); if (!fileIdMatch) return null; let embedUrl = `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`; if (page) { embedUrl += `#page=${page}`; } return embedUrl; }, []); useEffect(() => { const savedPageData = localStorage.getItem(`pdfProgress_${pdfId}`); if (savedPageData) { setSavedPage(savedPageData); setProgressPage(savedPageData); } }, [pdfId]); const handleSaveProgress = (e) => { e.preventDefault(); localStorage.setItem(`pdfProgress_${pdfId}`, progressPage); setSavedPage(progressPage); setShowSavedConfirmation(true); setTimeout(() => setShowSavedConfirmation(false), 2500); }; const handleFullscreen = () => { if (viewerRef.current) { viewerRef.current.requestFullscreen().catch(err => { console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`); }); } }; const iframeUrl = useMemo(() => getEmbedUrl(pdfInfo.url, savedPage), [pdfInfo.url, savedPage, getEmbedUrl]); const preventContextMenu = (e) => e.preventDefault(); return ( <div className="overlay" onClick={onClose} onContextMenu={preventContextMenu}> <div ref={viewerRef} className="pdf-viewer-modal bg-slate-900 border border-slate-700 animate-popIn" onClick={e => e.stopPropagation()}> <div className="header flex-shrink-0"> <h3 className="truncate pr-4">{pdfInfo.title}</h3> <div className="flex items-center gap-2"> <form onSubmit={handleSaveProgress} className="hidden sm:flex items-center gap-2 relative"> <label htmlFor="page-input" className="text-sm text-slate-400">Bookmark Page:</label> <input id="page-input" type="number" value={progressPage} onChange={(e) => setProgressPage(e.target.value)} className="bg-slate-700 rounded-md px-2 py-1 w-20 text-center text-white placeholder-slate-400" placeholder="#" required /> <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-1 px-3 rounded-md">Save</button> {showSavedConfirmation && <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-popIn">Saved!</div>} </form> <button onClick={handleFullscreen} title="Fullscreen" className="bg-white/10 hover:bg-white/20 text-white rounded-full w-8 h-8 flex items-center justify-center"> <i className="fas fa-expand"></i> </button> <button onClick={onClose} title="Close" className="close-button text-xl">&times;</button> </div> </div> <div className="relative flex-grow bg-gray-800"> {isLoading && ( <div className="absolute inset-0 flex flex-col justify-center items-center text-white bg-gray-800/90 backdrop-blur-sm z-10 p-4 text-center"> <i className="fas fa-spinner fa-spin text-4xl mb-6"></i> <p className="font-bold text-lg">Loading HD Document...</p> {savedPage && <p className="text-sm text-gray-400 mt-2">Jumping to your bookmark on page {savedPage}...</p>} <div className="mt-8 bg-indigo-900/50 border border-indigo-500 rounded-lg p-4 max-w-md"> <h4 className="font-semibold text-indigo-300 flex items-center justify-center gap-2"><i className="fas fa-info-circle"></i> Heads Up!</h4> <p className="text-slate-300 text-sm mt-2"> To **zoom**, print, or go to a page, move your cursor to the **top-right corner** of the document viewer. A toolbar will appear. </p> </div> </div> )} <iframe src={iframeUrl} onLoad={() => setIsLoading(false)} className={`w-full h-full border-0 transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`} title="HD PDF Viewer" sandbox="allow-scripts allow-same-origin"></iframe> </div> </div> </div> ); };
     const CompulsoryNoticeModal = ({ notice, onClose }) => { if (!notice) return null; return ( <div className="overlay"> <div className="modal-box glassmorphism text-white relative animate-popIn"> <h2 className="text-3xl font-bold mb-4 font-serif">{notice.title}</h2> <p className="text-sm text-white/70 mb-4">Posted on: {notice.date}</p> <div className="text-left text-white/90 leading-relaxed my-6 max-h-[40vh] overflow-y-auto" dangerouslySetInnerHTML={{ __html: notice.content }}></div> <button onClick={onClose} className="gradient-button text-white font-bold py-2 px-8 rounded-full shadow-md mt-4">I Understand</button> </div> </div> ); };
-    const WinnerCertificateModal = ({ winnerInfo, onClose }) => {
-        if (!winnerInfo) return null;
-        const { name, rank, score, color, medal } = winnerInfo;
-        const rankText = rank === 1 ? "1st Place" : rank === 2 ? "2nd Place" : "3rd Place";
-        const rankColorClass = {amber: 'border-amber-400', slate: 'border-slate-400', orange: 'border-orange-500'}[color] || 'border-gray-400';
-        const handleDownload = () => { const certElement = document.getElementById('winner-certificate'); if (certElement) { html2canvas(certElement, {backgroundColor: '#111827', useCORS: true}).then(canvas => { const link = document.createElement('a'); link.download = `Winner_Certificate_${name}.png`; link.href = canvas.toDataURL('image/png'); link.click(); }); } };
-        return ( <div className="overlay"> <div className="modal-box bg-slate-900/80 backdrop-blur-lg border border-white/20 p-0 max-w-2xl w-full"> <div id="winner-certificate" className="relative p-8 text-white bg-slate-900"> <div className={`absolute inset-0 border-8 ${rankColorClass} rounded-lg`}></div> <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/az-subtle.png')] opacity-10"></div> <div className="relative text-center"> <h1 className="text-4xl font-serif text-amber-300">Certificate of Achievement</h1> <p className="mt-2 text-lg text-slate-300">Awarded for Outstanding Performance</p> <div className="my-8"> <p className="text-slate-400">This certificate is proudly presented to</p> <p className="text-5xl font-script my-3 text-white">{name}</p> <p className="text-slate-400">for securing the</p> <p className={`text-4xl font-bold my-2 text-${color}-400`}>{rankText} {medal}</p> <p className="text-slate-400">in the weekly quiz competition held on</p> <p className="font-semibold text-lg text-white">{DATA.competitionResults.date}</p> <p className="text-slate-400 mt-1">with a score of <span className="font-bold text-white">{score}</span>.</p> </div> <div className="flex justify-between items-center mt-10 border-t border-amber-400/30 pt-4"> <div><p className="font-script text-3xl">Ganesh Dahal</p><p className="text-xs text-slate-400 tracking-widest">PORTAL CREATOR</p></div> <img src="https://i.ibb.co/T0f0d3j/gold-seal-embossed.png" alt="Seal" className="w-24 h-24" /> </div> </div> </div> <div className="p-4 bg-black/20 flex flex-col sm:flex-row gap-4 justify-center"> <button onClick={handleDownload} className="gradient-button text-white font-bold py-2 px-6 rounded-full"><i className="fas fa-download mr-2"></i>Download Certificate</button> <button onClick={onClose} className="bg-white/20 text-white font-bold py-2 px-6 rounded-full">Close</button> </div> </div> </div> );
-    };
-    const CourseCompletionCelebration = ({ userName, onViewCertificate }) => {
-        useEffect(() => { const container = document.getElementById('confetti-container'); if (!container) return; for (let i = 0; i < 50; i++) { const confetti = document.createElement('div'); confetti.className = 'confetti'; confetti.style.left = `${Math.random() * 100}vw`; confetti.style.animationDelay = `${Math.random() * 3}s`; confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; container.appendChild(confetti); } }, []);
-        return (<div className="overlay"><div id="confetti-container" className="absolute inset-0 overflow-hidden z-0"></div><div className="modal-box glassmorphism text-white relative animate-popIn border-2 border-amber-400/50 max-w-lg"><div className="text-7xl mb-4 animate-[tada_1.5s_ease-in-out]">🎉</div><h1 className="text-4xl font-extrabold font-serif text-amber-300">Congratulations, {userName}!</h1><p className="mt-4 text-lg text-white/90">You have successfully completed all the daily quizzes in the Balen Scholarship Preparatory Program!</p><p className="mt-2 text-white/80">Your dedication is inspiring. We wish you the best of luck in your exam!</p><button onClick={onViewCertificate} className="gradient-button text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg mt-8">View Your Certificate <i className="fas fa-arrow-right ml-2"></i></button></div></div>);
-    };
-
+    const WinnerCertificateModal = ({ winnerInfo, onClose }) => { if (!winnerInfo) return null; const { name, rank, score, color, medal } = winnerInfo; const rankText = rank === 1 ? "1st Place" : rank === 2 ? "2nd Place" : "3rd Place"; const rankColorClass = {amber: 'border-amber-400', slate: 'border-slate-400', orange: 'border-orange-500'}[color] || 'border-gray-400'; const handleDownload = () => { const certElement = document.getElementById('winner-certificate'); if (certElement) { html2canvas(certElement, {backgroundColor: '#111827', useCORS: true}).then(canvas => { const link = document.createElement('a'); link.download = `Winner_Certificate_${name}.png`; link.href = canvas.toDataURL('image/png'); link.click(); }); } }; return ( <div className="overlay"> <div className="modal-box bg-slate-900/80 backdrop-blur-lg border border-white/20 p-0 max-w-2xl w-full"> <div id="winner-certificate" className="relative p-8 text-white bg-slate-900"> <div className={`absolute inset-0 border-8 ${rankColorClass} rounded-lg`}></div> <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/az-subtle.png')] opacity-10"></div> <div className="relative text-center"> <h1 className="text-4xl font-serif text-amber-300">Certificate of Achievement</h1> <p className="mt-2 text-lg text-slate-300">Awarded for Outstanding Performance</p> <div className="my-8"> <p className="text-slate-400">This certificate is proudly presented to</p> <p className="text-5xl font-script my-3 text-white">{name}</p> <p className="text-slate-400">for securing the</p> <p className={`text-4xl font-bold my-2 text-${color}-400`}>{rankText} {medal}</p> <p className="text-slate-400">in the weekly quiz competition held on</p> <p className="font-semibold text-lg text-white">{DATA.competitionResults.date}</p> <p className="text-slate-400 mt-1">with a score of <span className="font-bold text-white">{score}</span>.</p> </div> <div className="flex justify-between items-center mt-10 border-t border-amber-400/30 pt-4"> <div><p className="font-script text-3xl">Ganesh Dahal</p><p className="text-xs text-slate-400 tracking-widest">PORTAL CREATOR</p></div> <img src="https://i.ibb.co/T0f0d3j/gold-seal-embossed.png" alt="Seal" className="w-24 h-24" /> </div> </div> </div> <div className="p-4 bg-black/20 flex flex-col sm:flex-row gap-4 justify-center"> <button onClick={handleDownload} className="gradient-button text-white font-bold py-2 px-6 rounded-full"><i className="fas fa-download mr-2"></i>Download Certificate</button> <button onClick={onClose} className="bg-white/20 text-white font-bold py-2 px-6 rounded-full">Close</button> </div> </div> </div> ); };
+    const CourseCompletionCelebration = ({ userName, onViewCertificate }) => { useEffect(() => { const container = document.getElementById('confetti-container'); if (!container) return; for (let i = 0; i < 50; i++) { const confetti = document.createElement('div'); confetti.className = 'confetti'; confetti.style.left = `${Math.random() * 100}vw`; confetti.style.animationDelay = `${Math.random() * 3}s`; confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; container.appendChild(confetti); } }, []); return (<div className="overlay"><div id="confetti-container" className="absolute inset-0 overflow-hidden z-0"></div><div className="modal-box glassmorphism text-white relative animate-popIn border-2 border-amber-400/50 max-w-lg"><div className="text-7xl mb-4 animate-[tada_1.5s_ease-in-out]">🎉</div><h1 className="text-4xl font-extrabold font-serif text-amber-300">Congratulations, {userName}!</h1><p className="mt-4 text-lg text-white/90">You have successfully completed all the daily quizzes in the Balen Scholarship Preparatory Program!</p><p className="mt-2 text-white/80">Your dedication is inspiring. We wish you the best of luck in your exam!</p><button onClick={onViewCertificate} className="gradient-button text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg mt-8">View Your Certificate <i className="fas fa-arrow-right ml-2"></i></button></div></div>); };
+    
     // =================================================================================
     // ===== PAGE SECTIONS =====
     // =================================================================================
@@ -2020,133 +2038,48 @@
             </section>
         );
     };
-    const EntertainmentSection = ({ onBrainBreakComplete, checkAndUnlockAchievement }) => {
-        const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-        
-        const [dailyProgress, setDailyProgress] = useState(
-            getJSONFromLocalStorage(`brainBreakProgress_${dayOfYear}`, { teasers: {}, riddle: false })
-        );
+    const EntertainmentSection = ({ onBrainBreakComplete, checkAndUnlockAchievement }) => { const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)); const [dailyProgress, setDailyProgress] = useState( getJSONFromLocalStorage(`brainBreakProgress_${dayOfYear}`, { teasers: {}, riddle: false }) ); const [riddleGuess, setRiddleGuess] = useState(''); const [riddleStatus, setRiddleStatus] = useState('unanswered'); const teasers = DATA.entertainment.brainTeasers; const dailyTeasers = useMemo(() => [ {...teasers[dayOfYear % teasers.length], id: `d${dayOfYear}t0`}, {...teasers[(dayOfYear + 5) % teasers.length], id: `d${dayOfYear}t1`}, {...teasers[(dayOfYear + 10) % teasers.length], id: `d${dayOfYear}t2`} ], [dayOfYear]); const riddle = useMemo(() => DATA.entertainment.riddles[dayOfYear % DATA.entertainment.riddles.length], [dayOfYear]); const quote = useMemo(() => DATA.entertainment.motivationalQuotes[dayOfYear % DATA.entertainment.motivationalQuotes.length], [dayOfYear]); const completedTeasersCount = Object.values(dailyProgress.teasers || {}).filter(ans => ans.isCorrect).length; const handleProgress = (activityType) => { onBrainBreakComplete(); if ((activityType === 'riddle' && completedTeasersCount > 0) || (activityType === 'teaser' && dailyProgress.riddle)) { checkAndUnlockAchievement('BRAIN_ACADEMY'); } }; const handleTeaserSubmit = (teaserId, option, isCorrect) => { if(dailyProgress.teasers && dailyProgress.teasers[teaserId]) return; const newProgress = { ...dailyProgress, teasers: { ...dailyProgress.teasers, [teaserId]: { answer: option, isCorrect } }}; setDailyProgress(newProgress); localStorage.setItem(`brainBreakProgress_${dayOfYear}`, JSON.stringify(newProgress)); if (isCorrect) { handleProgress('teaser'); } }; const handleRiddleSubmit = (e) => { e.preventDefault(); if(dailyProgress.riddle) return; if (riddle.answers.includes(riddleGuess.toLowerCase().trim())) { setRiddleStatus('correct'); const newProgress = { ...dailyProgress, riddle: true }; setDailyProgress(newProgress); localStorage.setItem(`brainBreakProgress_${dayOfYear}`, JSON.stringify(newProgress)); handleProgress('riddle'); } else { setRiddleStatus('incorrect'); setTimeout(() => setRiddleStatus('unanswered'), 2000); } }; return ( <section id="entertainment" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800"> <div className="container mx-auto"> <h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-4 animate-fadeIn">Brain Break Zone</h2> <p className="text-center text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">Take a fun break, challenge your mind, and earn extra XP!</p> <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp mb-8"> <h3 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center"><i className="fas fa-quote-left mr-3"></i>Quote of the Day</h3> <p className="text-xl italic text-gray-700 dark:text-gray-300">"{quote.quote}"</p> <p className="text-right mt-4 font-semibold text-gray-500 dark:text-gray-400">- {quote.author}</p> </div> <div className="grid grid-cols-1 lg:grid-cols-2 gap-8"> <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp"> <h3 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-4 flex items-center"><i className="fas fa-bolt mr-3"></i>Daily Brain Teasers</h3> <div className="space-y-6"> {dailyTeasers.map((teaser) => { const userAnswer = dailyProgress.teasers ? dailyProgress.teasers[teaser.id] : undefined; return ( <div key={teaser.id}> <p className="text-lg text-gray-700 dark:text-gray-300 mb-4 font-semibold">{teaser.question}</p> <div className="space-y-3"> {teaser.options.map(option => { const isCorrect = option === teaser.correctAnswer; const isSelected = userAnswer?.answer === option; let buttonClass = "w-full text-left p-3 rounded-lg border-2 transition-all font-semibold "; if (userAnswer) { if (isCorrect) buttonClass += "bg-green-200 border-green-400 text-green-800"; else if (isSelected) buttonClass += "bg-red-200 border-red-400 text-red-800"; else buttonClass += "bg-gray-100 dark:bg-slate-800 border-gray-200 dark:border-slate-700 opacity-60"; } else { buttonClass += "bg-gray-100 dark:bg-slate-800 border-gray-200 dark:border-slate-700 hover:bg-indigo-100 hover:border-indigo-400"; } return <button key={option} disabled={!!userAnswer} onClick={() => handleTeaserSubmit(teaser.id, option, isCorrect)} className={buttonClass}>{option}</button>; })} </div> {userAnswer?.isCorrect && <p className="mt-4 text-sm font-semibold text-green-500 animate-tada">Completed! +{DATA.XP_PER_BRAIN_BREAK} XP</p>} </div> ) })} </div> </div> <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp" style={{animationDelay: '100ms'}}> <h3 className="text-2xl font-bold text-amber-600 dark:text-amber-400 mb-4 flex items-center"><i className="fas fa-puzzle-piece mr-3"></i>Riddle Challenge</h3> <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">{riddle.riddle}</p> {(riddleStatus !== 'correct' && !dailyProgress.riddle) ? ( <form onSubmit={handleRiddleSubmit} className="flex gap-2"> <input type="text" value={riddleGuess} onChange={e => setRiddleGuess(e.target.value)} placeholder="Your answer..." className="flex-grow p-2 rounded-lg border-2 bg-gray-100 dark:bg-slate-800 focus:ring-2 focus:ring-amber-500" /> <button type="submit" className="bg-amber-500 text-white font-bold px-4 rounded-lg">Submit</button> </form> ) : null} {(riddleStatus === 'correct' || dailyProgress.riddle) && <p className="text-green-500 font-bold animate-tada">Correct! +{DATA.XP_PER_BRAIN_BREAK} XP</p>} {riddleStatus === 'incorrect' && <p className="text-red-500 font-bold">Not quite, try again!</p>} </div> </div> </div> </section> ); };
+    
+    // NEW FULLSCREEN QUIZ VIEWER COMPONENT
+    const FullscreenQuizViewer = ({ quiz, onClose }) => {
+        const [isLoading, setIsLoading] = useState(true);
 
-        const [riddleGuess, setRiddleGuess] = useState('');
-        const [riddleStatus, setRiddleStatus] = useState('unanswered');
-
-        const teasers = DATA.entertainment.brainTeasers;
-        const dailyTeasers = useMemo(() => [
-            {...teasers[dayOfYear % teasers.length], id: `d${dayOfYear}t0`},
-            {...teasers[(dayOfYear + 5) % teasers.length], id: `d${dayOfYear}t1`},
-            {...teasers[(dayOfYear + 10) % teasers.length], id: `d${dayOfYear}t2`}
-        ], [dayOfYear]);
-        
-        const riddle = useMemo(() => DATA.entertainment.riddles[dayOfYear % DATA.entertainment.riddles.length], [dayOfYear]);
-        const quote = useMemo(() => DATA.entertainment.motivationalQuotes[dayOfYear % DATA.entertainment.motivationalQuotes.length], [dayOfYear]);
-        
-        const completedTeasersCount = Object.values(dailyProgress.teasers || {}).filter(ans => ans.isCorrect).length;
-        
-        const handleProgress = (activityType) => { 
-            onBrainBreakComplete(); 
-            if ((activityType === 'riddle' && completedTeasersCount > 0) || (activityType === 'teaser' && dailyProgress.riddle)) { 
-                checkAndUnlockAchievement('BRAIN_ACADEMY'); 
-            }
-        };
-
-        const handleTeaserSubmit = (teaserId, option, isCorrect) => {
-            if(dailyProgress.teasers && dailyProgress.teasers[teaserId]) return;
-            const newProgress = { ...dailyProgress, teasers: { ...dailyProgress.teasers, [teaserId]: { answer: option, isCorrect } }};
-            setDailyProgress(newProgress); 
-            localStorage.setItem(`brainBreakProgress_${dayOfYear}`, JSON.stringify(newProgress));
-            if (isCorrect) {
-                handleProgress('teaser');
-            }
-        };
-
-        const handleRiddleSubmit = (e) => {
-            e.preventDefault(); 
-            if(dailyProgress.riddle) return;
-            if (riddle.answers.includes(riddleGuess.toLowerCase().trim())) {
-                setRiddleStatus('correct');
-                const newProgress = { ...dailyProgress, riddle: true };
-                setDailyProgress(newProgress); 
-                localStorage.setItem(`brainBreakProgress_${dayOfYear}`, JSON.stringify(newProgress));
-                handleProgress('riddle');
-            } else { 
-                setRiddleStatus('incorrect'); 
-                setTimeout(() => setRiddleStatus('unanswered'), 2000); 
-            }
-        };
-
-        return ( 
-            <section id="entertainment" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800"> 
-                <div className="container mx-auto"> 
-                    <h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-4 animate-fadeIn">Brain Break Zone</h2> 
-                    <p className="text-center text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">Take a fun break, challenge your mind, and earn extra XP!</p> 
-                    
-                    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp mb-8"> 
-                        <h3 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center"><i className="fas fa-quote-left mr-3"></i>Quote of the Day</h3> 
-                        <p className="text-xl italic text-gray-700 dark:text-gray-300">"{quote.quote}"</p> 
-                        <p className="text-right mt-4 font-semibold text-gray-500 dark:text-gray-400">- {quote.author}</p> 
-                    </div> 
-                    
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Teasers Section */}
-                        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp"> 
-                            <h3 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-4 flex items-center"><i className="fas fa-bolt mr-3"></i>Daily Brain Teasers</h3> 
-                            <div className="space-y-6"> 
-                                {dailyTeasers.map((teaser) => { 
-                                    const userAnswer = dailyProgress.teasers ? dailyProgress.teasers[teaser.id] : undefined; 
-                                    return (
-                                        <div key={teaser.id}> 
-                                            <p className="text-lg text-gray-700 dark:text-gray-300 mb-4 font-semibold">{teaser.question}</p> 
-                                            <div className="space-y-3">
-                                                {teaser.options.map(option => { 
-                                                    const isCorrect = option === teaser.correctAnswer; 
-                                                    const isSelected = userAnswer?.answer === option; 
-                                                    let buttonClass = "w-full text-left p-3 rounded-lg border-2 transition-all font-semibold "; 
-                                                    if (userAnswer) { 
-                                                        if (isCorrect) buttonClass += "bg-green-200 border-green-400 text-green-800"; 
-                                                        else if (isSelected) buttonClass += "bg-red-200 border-red-400 text-red-800"; 
-                                                        else buttonClass += "bg-gray-100 dark:bg-slate-800 border-gray-200 dark:border-slate-700 opacity-60"; 
-                                                    } else { 
-                                                        buttonClass += "bg-gray-100 dark:bg-slate-800 border-gray-200 dark:border-slate-700 hover:bg-indigo-100 hover:border-indigo-400"; 
-                                                    } 
-                                                    return <button key={option} disabled={!!userAnswer} onClick={() => handleTeaserSubmit(teaser.id, option, isCorrect)} className={buttonClass}>{option}</button>; 
-                                                })}
-                                            </div> 
-                                            {userAnswer?.isCorrect && <p className="mt-4 text-sm font-semibold text-green-500 animate-tada">Completed! +{DATA.XP_PER_BRAIN_BREAK} XP</p>} 
-                                        </div>
-                                    )
-                                })} 
-                            </div>
+        return (
+            <div className="fullscreen-quiz-viewer">
+                <div className="header">
+                    <h3 className="truncate pr-4">{quiz.title}</h3>
+                    <button onClick={onClose} title="Close Quiz" className="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold">
+                        &times;
+                    </button>
+                </div>
+                <div className="relative flex-grow bg-gray-800">
+                    {isLoading && (
+                        <div className="absolute inset-0 flex flex-col justify-center items-center text-white bg-gray-800 z-10 p-4 text-center">
+                            <i className="fas fa-spinner fa-spin text-4xl mb-4"></i>
+                            <p className="font-bold">Loading Quiz...</p>
                         </div>
-
-                        {/* Riddle Section */}
-                        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp" style={{animationDelay: '100ms'}}> 
-                            <h3 className="text-2xl font-bold text-amber-600 dark:text-amber-400 mb-4 flex items-center"><i className="fas fa-puzzle-piece mr-3"></i>Riddle Challenge</h3> 
-                            <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">{riddle.riddle}</p> 
-                            
-                            {riddleStatus !== 'correct' && !dailyProgress.riddle ? ( 
-                                <form onSubmit={handleRiddleSubmit} className="flex gap-2"> 
-                                    <input type="text" value={riddleGuess} onChange={e => setRiddleGuess(e.target.value)} placeholder="Your answer..." className="flex-grow p-2 rounded-lg border-2 bg-gray-100 dark:bg-slate-800 focus:ring-2 focus:ring-amber-500" /> 
-                                    <button type="submit" className="bg-amber-500 text-white font-bold px-4 rounded-lg">Submit</button> 
-                                </form> 
-                            ) : null} 
-                            
-                            {(riddleStatus === 'correct' || dailyProgress.riddle) && <p className="text-green-500 font-bold animate-tada">Correct! +{DATA.XP_PER_BRAIN_BREAK} XP</p>} 
-                            {riddleStatus === 'incorrect' && <p className="text-red-500 font-bold">Not quite, try again!</p>} 
-                        </div> 
-                    </div> 
-                </div> 
-            </section> 
-        ); 
+                    )}
+                    <iframe
+                        src={quiz.link}
+                        onLoad={() => setIsLoading(false)}
+                        className={`w-full h-full transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+                        title={quiz.title}
+                        sandbox="allow-scripts allow-same-origin"
+                    ></iframe>
+                </div>
+            </div>
+        );
     };
+
     const QuizzesSection = ({ isPremium, completedQuizzes, userStats, onQuizComplete, onPremiumUnlock, onStateRefresh }) => {
         const [showPaymentModal, setShowPaymentModal] = useState(false);
         const [showShareModal, setShowShareModal] = useState(false);
+        const [activeQuiz, setActiveQuiz] = useState(null); // State for the fullscreen viewer
         const { unlockedByStreak, unlockedByShare, hasShared } = getJSONFromLocalStorage('balenQuizUnlocks', { unlockedByStreak: 0, unlockedByShare: 0, hasShared: false, dailyUnlocks: 0 });
 
         const getDailyPaceInfo = () => {
             const today = new Date().toISOString().split('T')[0];
             const storedPace = getJSONFromLocalStorage('balenDailyPace', { date: today, count: 0 });
-
             if (storedPace.date !== today) {
                 const newPace = { date: today, count: 0 };
                 localStorage.setItem('balenDailyPace', JSON.stringify(newPace));
@@ -2166,89 +2099,50 @@
             return DATA.dailyQuizzes.map((quiz, index) => {
                 let status = 'Locked', statusText = 'Complete prior quizzes to unlock.', buttonText = 'Locked';
                 if (completedQuizzes[quiz.day]) {
-                    status = 'Completed';
-                    statusText = 'You have completed this quiz.';
-                    buttonText = 'Play Again';
+                    status = 'Completed'; statusText = 'You have completed this quiz.'; buttonText = 'Play Again';
                     return { ...quiz, status, statusText, buttonText };
                 }
                 const quizzesBefore = DATA.dailyQuizzes.slice(0, index);
-                if (!quizzesBefore.every(q => completedQuizzes[q.day])) {
-                    return { ...quiz, status, statusText, buttonText };
-                }
+                if (!quizzesBefore.every(q => completedQuizzes[q.day])) { return { ...quiz, status, statusText, buttonText }; }
                 const canUnlockMoreToday = dailyPaceInfo.count < 2;
-                if (!canUnlockMoreToday) {
-                    status = 'Locked';
-                    statusText = "You've unlocked your 2 quizzes for today. Come back tomorrow to continue.";
-                    buttonText = 'Locked';
-                    return { ...quiz, status, statusText, buttonText };
-                }
-                if (isPremium) {
-                    status = 'Unlocked';
-                    statusText = `You can unlock ${2 - dailyPaceInfo.count} more quizzes today.`;
-                    buttonText = 'Start Quiz';
-                } else {
-                    if (numCompleted >= FREE_USER_QUIZ_LIMIT) {
-                        status = 'Requires Premium';
-                        statusText = `You've completed all ${FREE_USER_QUIZ_LIMIT} available free quizzes. Upgrade to Premium!`;
-                        buttonText = 'Unlock';
-                    } else if (quiz.isPremium) {
-                        if (canUnlockReward) {
-                            status = 'Unlocked';
-                            statusText = 'Unlock a premium quiz with a reward!';
-                            buttonText = 'Unlock with Reward';
-                        } else {
-                            status = 'Requires Premium';
-                            statusText = 'Unlock via Premium Access or by earning rewards.';
-                            buttonText = 'Unlock';
-                        }
-                    } else {
-                        status = 'Unlocked';
-                        statusText = `You can unlock ${2 - dailyPaceInfo.count} more quizzes today.`;
-                        buttonText = 'Start Quiz';
-                    }
+                if (!canUnlockMoreToday) { status = 'Locked'; statusText = "You've unlocked your 2 quizzes for today. Come back tomorrow to continue."; buttonText = 'Locked'; return { ...quiz, status, statusText, buttonText }; }
+                if (isPremium) { status = 'Unlocked'; statusText = `You can unlock ${2 - dailyPaceInfo.count} more quizzes today.`; buttonText = 'Start Quiz'; } 
+                else {
+                    if (numCompleted >= FREE_USER_QUIZ_LIMIT) { status = 'Requires Premium'; statusText = `You've completed all ${FREE_USER_QUIZ_LIMIT} available free quizzes. Upgrade to Premium!`; buttonText = 'Unlock'; } 
+                    else if (quiz.isPremium) {
+                        if (canUnlockReward) { status = 'Unlocked'; statusText = 'Unlock a premium quiz with a reward!'; buttonText = 'Unlock with Reward'; } 
+                        else { status = 'Requires Premium'; statusText = 'Unlock via Premium Access or by earning rewards.'; buttonText = 'Unlock'; }
+                    } else { status = 'Unlocked'; statusText = `You can unlock ${2 - dailyPaceInfo.count} more quizzes today.`; buttonText = 'Start Quiz'; }
                 }
                 return { ...quiz, status, statusText, buttonText };
             });
         }, [completedQuizzes, isPremium, unlockedByStreak, unlockedByShare, dailyPaceInfo]);
 
-        const handleQuizClick = (e, day, link, status) => {
-            if (status !== 'Unlocked' && status !== 'Completed') {
-                e.preventDefault();
-                return;
-            }
+        const handleQuizClick = (quiz, status) => {
+            if (status !== 'Unlocked' && status !== 'Completed') return;
             if (status === 'Unlocked') {
-                if (!completedQuizzes[day]) {
+                if (!completedQuizzes[quiz.day]) {
                     const currentPace = getDailyPaceInfo();
-                    localStorage.setItem('balenDailyPace', JSON.stringify({
-                        date: currentPace.date,
-                        count: currentPace.count + 1
-                    }));
+                    localStorage.setItem('balenDailyPace', JSON.stringify({ date: currentPace.date, count: currentPace.count + 1 }));
                     onStateRefresh(); 
                 }
             }
-            onQuizComplete(day);
-            window.open(link, '_blank');
+            onQuizComplete(quiz.day);
+            setActiveQuiz(quiz); // Open in fullscreen viewer
         };
-
-        const handleShare = () => {
-            localStorage.setItem('balenQuizUnlocks', JSON.stringify({ unlockedByStreak, unlockedByShare: 5, hasShared: true }));
-            setShowShareModal(false);
-            onStateRefresh();
-        };
+        
+        const handleShare = () => { localStorage.setItem('balenQuizUnlocks', JSON.stringify({ unlockedByStreak, unlockedByShare: 5, hasShared: true })); setShowShareModal(false); onStateRefresh(); };
 
         return (
             <section id="quizzes" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800">
+                {activeQuiz && <FullscreenQuizViewer quiz={activeQuiz} onClose={() => setActiveQuiz(null)} />}
                 <div className="container mx-auto">
                     <h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-10 animate-fadeIn">Daily Quizzes</h2>
                     <div className="mb-10 p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-md animate-popIn">
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Your Quiz Progress</h3>
                         <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">{Object.keys(completedQuizzes).length} out of {DATA.dailyQuizzes.length} quizzes completed</p>
                     </div>
-                    {!isPremium && (
-                        <div className="flex flex-col md:flex-row gap-4 mb-8">
-                            {hasShared ? (<div className="flex-1 text-center bg-green-100 dark:bg-green-900/50 p-6 rounded-2xl shadow"> <h3 className="text-2xl font-bold text-green-700 dark:text-green-300">Thank You For Sharing!</h3> <p className="text-green-600 dark:text-green-400 my-2">You've unlocked {unlockedByShare} premium quizzes. Keep up your daily streak to unlock more!</p></div>) : (<div className="flex-1 text-center bg-green-100 dark:bg-green-900/50 p-6 rounded-2xl shadow"> <h3 className="text-2xl font-bold text-green-700 dark:text-green-300">Share & Unlock!</h3> <p className="text-green-600 dark:text-green-400 my-2">Share our portal to unlock 5 premium quizzes for free!</p> <button onClick={() => setShowShareModal(true)} className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg">Share Now</button> </div>)}
-                            <div className="flex-1 text-center bg-amber-100 dark:bg-amber-900/50 p-6 rounded-2xl shadow"> <h3 className="text-2xl font-bold text-amber-700 dark:text-amber-300">Unlock All Quizzes</h3> <p className="text-amber-600 dark:text-amber-400 my-2">Get premium access to unlock all quizzes and materials permanently.</p> <button onClick={() => setShowPaymentModal(true)} className="gradient-button text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg">Get Premium</button> </div>
-                        </div>)}
+                    {!isPremium && ( <div className="flex flex-col md:flex-row gap-4 mb-8"> {hasShared ? (<div className="flex-1 text-center bg-green-100 dark:bg-green-900/50 p-6 rounded-2xl shadow"> <h3 className="text-2xl font-bold text-green-700 dark:text-green-300">Thank You For Sharing!</h3> <p className="text-green-600 dark:text-green-400 my-2">You've unlocked {unlockedByShare} premium quizzes. Keep up your daily streak to unlock more!</p></div>) : (<div className="flex-1 text-center bg-green-100 dark:bg-green-900/50 p-6 rounded-2xl shadow"> <h3 className="text-2xl font-bold text-green-700 dark:text-green-300">Share & Unlock!</h3> <p className="text-green-600 dark:text-green-400 my-2">Share our portal to unlock 5 premium quizzes for free!</p> <button onClick={() => setShowShareModal(true)} className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg">Share Now</button> </div>)} <div className="flex-1 text-center bg-amber-100 dark:bg-amber-900/50 p-6 rounded-2xl shadow"> <h3 className="text-2xl font-bold text-amber-700 dark:text-amber-300">Unlock All Quizzes</h3> <p className="text-amber-600 dark:text-amber-400 my-2">Get premium access to unlock all quizzes and materials permanently.</p> <button onClick={() => setShowPaymentModal(true)} className="gradient-button text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg">Get Premium</button> </div> </div>)}
                     {showPaymentModal && <PaymentModal onPaymentSuccess={onPremiumUnlock} onClose={() => setShowPaymentModal(false)} userName={userStats.name} />}
                     {showShareModal && (<div className="overlay"><div className="modal-box glassmorphism text-white"><h3>Share to Unlock Quizzes!</h3><p className="mt-2 mb-4">Share this link on any social media platform. After sharing, click the button below to claim your reward.</p><div className="flex justify-center gap-4 text-4xl mb-6"><a href={'https://www.facebook.com/sharer/sharer.php?u='+window.location.href} target="_blank" className="text-blue-400 hover:scale-110 transition-transform"><i className="fab fa-facebook"></i></a><a href={'https://wa.me/?text=Check out this amazing Balen Scholarship Prep Portal: '+window.location.href} target="_blank" className="text-green-400 hover:scale-110 transition-transform"><i className="fab fa-whatsapp"></i></a></div><button onClick={handleShare} className="gradient-button text-white font-bold py-3 px-8 rounded-full">I've Shared It!</button></div></div>)}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -2264,7 +2158,7 @@
                                         <p className={`font-semibold mb-1 text-sm ${{ 'Completed': 'text-green-600 dark:text-green-400', 'Unlocked': 'text-blue-600 dark:text-blue-400', 'Locked': 'text-gray-500 dark:text-gray-400', 'Requires Premium': 'text-amber-600 dark:text-amber-400' }[quiz.status]}`}>Status: {quiz.status}</p>
                                         <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{quiz.statusText}</p>
                                     </div>
-                                    <button onClick={quiz.status === 'Requires Premium' ? () => setShowPaymentModal(true) : (e) => handleQuizClick(e, quiz.day, quiz.link, quiz.status)} disabled={isDisabled} className={`w-full mt-auto font-bold py-2 px-4 rounded-full shadow-md text-sm transition-transform duration-200 ${!isDisabled ? 'gradient-button text-white' : 'bg-gray-300 dark:bg-slate-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'}`}>
+                                    <button onClick={quiz.status === 'Requires Premium' ? () => setShowPaymentModal(true) : () => handleQuizClick(quiz, quiz.status)} disabled={isDisabled} className={`w-full mt-auto font-bold py-2 px-4 rounded-full shadow-md text-sm transition-transform duration-200 ${!isDisabled ? 'gradient-button text-white' : 'bg-gray-300 dark:bg-slate-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'}`}>
                                         <span>{quiz.buttonText} <i className={`fas ${buttonIcons[quiz.buttonText] || 'fa-question-circle'} ml-2`}></i></span>
                                     </button>
                                 </div>
@@ -2280,7 +2174,6 @@
     // ===== 2. NEW AND UPDATED COMPONENTS FOR COMPETITION SECTION =====
     // =================================================================================
 
-    // Helper component for the new Test section
     const Section = ({ title, subtitle, children }) => (
         <div className="container mx-auto px-4 py-8">
             {title && (
@@ -2293,67 +2186,72 @@
         </div>
     );
 
-    // Helper component for the new Test results
     const DonutChart = ({ percentage }) => {
-        const size = 150;
-        const strokeWidth = 15;
-        const radius = (size - strokeWidth) / 2;
-        const circumference = 2 * Math.PI * radius;
-        const offset = circumference - (percentage / 100) * circumference;
-
+        const size = 150; const strokeWidth = 15; const radius = (size - strokeWidth) / 2; const circumference = 2 * Math.PI * radius; const offset = circumference - (percentage / 100) * circumference;
         return (
             <div className="relative" style={{ width: size, height: size }}>
                 <svg width={size} height={size} className="transform -rotate-90">
-                    <circle
-                        className="text-slate-200 dark:text-slate-700"
-                        stroke="currentColor"
-                        strokeWidth={strokeWidth}
-                        fill="transparent"
-                        r={radius}
-                        cx={size / 2}
-                        cy={size / 2}
-                    />
-                    <circle
-                        className="text-primary-500 text-green-500"
-                        stroke="currentColor"
-                        strokeWidth={strokeWidth}
-                        strokeDasharray={circumference}
-                        strokeDashoffset={offset}
-                        strokeLinecap="round"
-                        fill="transparent"
-                        r={radius}
-                        cx={size / 2}
-                        cy={size / 2}
-                        style={{ transition: 'stroke-dashoffset 0.5s ease-out' }}
-                    />
+                    <circle className="text-slate-200 dark:text-slate-700" stroke="currentColor" strokeWidth={strokeWidth} fill="transparent" r={radius} cx={size / 2} cy={size / 2} />
+                    <circle className="text-primary-500 text-green-500" stroke="currentColor" strokeWidth={strokeWidth} strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" fill="transparent" r={radius} cx={size / 2} cy={size / 2} style={{ transition: 'stroke-dashoffset 0.5s ease-out' }} />
                 </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-3xl font-bold text-slate-800 dark:text-white">{percentage}%</span>
-                </div>
+                <div className="absolute inset-0 flex items-center justify-center"> <span className="text-3xl font-bold text-slate-800 dark:text-white">{percentage}%</span> </div>
             </div>
         );
     };
-
-    // Main component for the new "Test" tab functionality
+    
+    // Main component for the new "Test" tab functionality with Timer
     const PracticeTestComponent = () => {
-        const { useMemo, useState } = React;
+        const { useState, useEffect, useMemo, useRef } = React;
+        const [view, setView] = useState('subject_select');
+        const [activeSubject, setActiveSubject] = useState(null);
+        const [activeQuizData, setActiveQuizData] = useState(null);
+        const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+        const [userAnswers, setUserAnswers] = useState([]);
+        const [timer, setTimer] = useState(10);
+        const [isTimeUp, setIsTimeUp] = useState(false); // New state for time up message
+        const timerRef = useRef(null);
 
-        // --- Sub-component for displaying results ---
+        useEffect(() => {
+            if (view === 'quiz') {
+                timerRef.current = setInterval(() => {
+                    setTimer(prev => {
+                        if (prev === 1) {
+                            clearInterval(timerRef.current);
+                            setIsTimeUp(true); // Show time's up message
+                            setTimeout(() => {
+                                handleNext(true); // Auto-move to next after showing message
+                            }, 1500); // Wait 1.5s before moving
+                            return 0;
+                        }
+                        return prev - 1;
+                    });
+                }, 1000);
+            }
+            return () => clearInterval(timerRef.current);
+        }, [view, currentQuestionIndex]);
+        
+        const resetTimer = () => {
+            clearInterval(timerRef.current);
+            setTimer(10);
+            setIsTimeUp(false); // Reset time's up message
+        };
+        
+        const handleNext = (isTimeUp = false) => {
+            resetTimer();
+            if (currentQuestionIndex < activeQuizData.questions.length - 1) {
+                setCurrentQuestionIndex(prev => prev + 1);
+            } else {
+                setView('results');
+            }
+        };
+
         const QuizResults = ({ quizData, userAnswers, onRestart, onSelectNew }) => {
             const { score, correctAnswers, wrongAnswers, percentage } = useMemo(() => {
                 let correct = 0;
-                quizData.questions.forEach((q, i) => {
-                    if (q.correctAnswer === userAnswers[i]) correct++;
-                });
+                quizData.questions.forEach((q, i) => { if (q.correctAnswer === userAnswers[i]) correct++; });
                 const total = quizData.questions.length;
-                return {
-                    score: correct,
-                    correctAnswers: correct,
-                    wrongAnswers: total - correct,
-                    percentage: total > 0 ? Math.round((correct / total) * 100) : 0
-                };
+                return { score: correct, correctAnswers: correct, wrongAnswers: total - correct, percentage: total > 0 ? Math.round((correct / total) * 100) : 0 };
             }, [quizData, userAnswers]);
-
             return (
                 <div className="w-full max-w-4xl mx-auto animate-slideInUp">
                     <div className="bg-white dark:bg-slate-800 p-6 md:p-8 text-center rounded-lg shadow-lg">
@@ -2362,18 +2260,9 @@
                         <div className="my-8 flex flex-col md:flex-row items-center justify-center gap-8">
                             <DonutChart percentage={percentage} />
                             <div className="flex gap-4 text-left">
-                                <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800/50 p-4 flex-1 rounded-lg">
-                                    <div className="font-bold text-3xl text-green-600 dark:text-green-400">{correctAnswers}</div>
-                                    <div className="text-sm font-semibold text-green-800 dark:text-green-300">Correct</div>
-                                </div>
-                                <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 p-4 flex-1 rounded-lg">
-                                    <div className="font-bold text-3xl text-red-600 dark:text-red-400">{wrongAnswers}</div>
-                                    <div className="text-sm font-semibold text-red-800 dark:text-red-300">Incorrect</div>
-                                </div>
-                                <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 p-4 flex-1 rounded-lg">
-                                    <div className="font-bold text-3xl text-blue-600 dark:text-blue-400">{score}/{quizData.questions.length}</div>
-                                    <div className="text-sm font-semibold text-blue-800 dark:text-blue-300">Score</div>
-                                </div>
+                                <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800/50 p-4 flex-1 rounded-lg"> <div className="font-bold text-3xl text-green-600 dark:text-green-400">{correctAnswers}</div> <div className="text-sm font-semibold text-green-800 dark:text-green-300">Correct</div> </div>
+                                <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 p-4 flex-1 rounded-lg"> <div className="font-bold text-3xl text-red-600 dark:text-red-400">{wrongAnswers}</div> <div className="text-sm font-semibold text-red-800 dark:text-red-300">Incorrect</div> </div>
+                                <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 p-4 flex-1 rounded-lg"> <div className="font-bold text-3xl text-blue-600 dark:text-blue-400">{score}/{quizData.questions.length}</div> <div className="text-sm font-semibold text-blue-800 dark:text-blue-300">Score</div> </div>
                             </div>
                         </div>
                         <div className="flex flex-col md:flex-row gap-4 justify-center">
@@ -2390,16 +2279,8 @@
                                 return (
                                     <div key={i} className="border-b border-slate-200 dark:border-slate-700 pb-4">
                                         <p className="font-semibold text-slate-800 dark:text-white">{i + 1}. {q.question}</p>
-                                        <p className={`mt-2 text-sm ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                                            <i className={`fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'} mr-2`}></i>
-                                            Your answer: <span className="font-bold">{userAnswer || "Not answered"}</span>
-                                        </p>
-                                        {!isCorrect &&
-                                            <p className="mt-1 text-sm text-green-600 dark:text-green-400">
-                                                <i className="fa-solid fa-check-circle mr-2"></i>
-                                                Correct answer: <span className="font-bold">{q.correctAnswer}</span>
-                                            </p>
-                                        }
+                                        <p className={`mt-2 text-sm ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}> <i className={`fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'} mr-2`}></i> Your answer: <span className="font-bold">{userAnswer || "Not answered"}</span> </p>
+                                        {!isCorrect && <p className="mt-1 text-sm text-green-600 dark:text-green-400"> <i className="fa-solid fa-check-circle mr-2"></i> Correct answer: <span className="font-bold">{q.correctAnswer}</span> </p>}
                                     </div>
                                 );
                             })}
@@ -2409,72 +2290,64 @@
             );
         };
         
-        // --- Main quiz logic ---
-        const [view, setView] = useState('subject_select'); // subject_select, chapter_select, quiz_config, quiz, results
-        const [activeQuizData, setActiveQuizData] = useState(null);
-        const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-        const [userAnswers, setUserAnswers] = useState([]);
-
-        const startQuiz = (quizData) => {
-            setActiveQuizData(quizData);
-            setUserAnswers(Array(quizData.questions.length).fill(null));
-            setCurrentQuestionIndex(0);
-            setView('quiz');
-        };
-
-        const generateMixedScienceQuiz = (numQuestions) => {
-            const allQuestions = Object.values(DATA.quizzes.Science.chapters).flatMap(chapter => chapter.questions);
-            for (let i = allQuestions.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]];
-            }
+        const startQuiz = (quizData) => { setActiveQuizData(quizData); setUserAnswers(Array(quizData.questions.length).fill(null)); setCurrentQuestionIndex(0); resetTimer(); setView('quiz'); };
+        
+        const generateMixedQuiz = (subject, numQuestions) => {
+            const allQuestions = Object.values(DATA.quizzes[subject].chapters).flatMap(chapter => chapter.questions);
+            for (let i = allQuestions.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]]; }
             const selectedQuestions = allQuestions.slice(0, numQuestions);
-            return { title: `Mixed Science Quiz (${selectedQuestions.length} Qs)`, questions: selectedQuestions };
+            return { title: `Mixed ${subject} Quiz (${selectedQuestions.length} Qs)`, questions: selectedQuestions };
         };
 
         const handleAnswerSelect = (answer) => {
+            if (userAnswers[currentQuestionIndex] !== null) return; // Prevent changing answer
             const newAnswers = [...userAnswers];
             newAnswers[currentQuestionIndex] = answer;
             setUserAnswers(newAnswers);
         };
 
-        const handleNext = () => {
-            if (currentQuestionIndex < activeQuizData.questions.length - 1) {
-                setCurrentQuestionIndex(prev => prev + 1);
-            } else {
-                setView('results');
-            }
-        };
-
-        // --- Render different views based on state ---
-        if (view === 'results') {
-            return <Section><QuizResults quizData={activeQuizData} userAnswers={userAnswers} onRestart={() => startQuiz(activeQuizData)} onSelectNew={() => setView('subject_select')} /></Section>;
-        }
-
+        if (view === 'results') { return <Section><QuizResults quizData={activeQuizData} userAnswers={userAnswers} onRestart={() => startQuiz(activeQuizData)} onSelectNew={() => setView('subject_select')} /></Section>; }
+        
         if (view === 'quiz') {
             const currentQuestion = activeQuizData.questions[currentQuestionIndex];
+            const timerColor = timer > 5 ? 'text-green-500' : timer > 2 ? 'text-yellow-500' : 'text-red-500';
             return (
                 <Section>
-                    <div className="w-full max-w-3xl mx-auto bg-white dark:bg-slate-800 p-6 md:p-8 rounded-lg shadow-lg animate-slideInUp">
+                    <div className="w-full max-w-3xl mx-auto bg-white dark:bg-slate-800 p-6 md:p-8 rounded-2xl shadow-2xl animate-popIn relative overflow-hidden">
+                        {isTimeUp && (
+                            <div className="absolute inset-0 bg-red-800/80 backdrop-blur-sm flex flex-col justify-center items-center z-20 animate-popIn">
+                                <i className="far fa-clock text-7xl text-white animate-tada"></i>
+                                <h2 className="text-5xl font-extrabold text-white mt-4">Time's Up!</h2>
+                            </div>
+                        )}
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="font-serif text-xl font-bold text-slate-800 dark:text-white">{activeQuizData.title}</h2>
-                            <span className="font-semibold text-slate-500 dark:text-slate-400">{currentQuestionIndex + 1} / {activeQuizData.questions.length}</span>
+                            <div className="flex items-center gap-4">
+                                <div className={`flex items-center gap-2 font-bold text-lg ${timerColor}`}>
+                                    <i className="far fa-clock"></i>
+                                    <span>{timer}s</span>
+                                </div>
+                                <span className="font-semibold text-slate-500 dark:text-slate-400">{currentQuestionIndex + 1} / {activeQuizData.questions.length}</span>
+                            </div>
                         </div>
-                        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-6">
-                            <div className="bg-indigo-500 h-2 rounded-full transition-all duration-300" style={{ width: `${((currentQuestionIndex + 1) / activeQuizData.questions.length) * 100}%` }}></div>
-                        </div>
-                        <h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-white mb-6">{currentQuestion.question}</h3>
+                        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 mb-6"> <div className="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style={{ width: `${((currentQuestionIndex + 1) / activeQuizData.questions.length) * 100}%` }}></div> </div>
+                        <h3 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white mb-8 text-center min-h-[6rem] flex items-center justify-center animate-fadeIn">{currentQuestion.question}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {currentQuestion.options.map(option => (
-                                <button key={option} onClick={() => handleAnswerSelect(option)}
-                                    className={`p-4 rounded-lg text-left font-medium border-2 transition-all ${userAnswers[currentQuestionIndex] === option ? 'bg-indigo-500 border-indigo-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-800 border-transparent hover:border-indigo-400'}`}>
-                                    {option}
-                                </button>
-                            ))}
+                            {currentQuestion.options.map(option => {
+                                const isSelected = userAnswers[currentQuestionIndex] === option;
+                                
+                                let buttonClass = 'p-4 rounded-lg text-left font-semibold border-2 transition-all duration-300 ';
+                                if(isSelected) {
+                                   buttonClass += 'bg-indigo-500 border-indigo-500 text-white shadow-lg transform scale-105';
+                                } else {
+                                   buttonClass += 'bg-slate-100 dark:bg-slate-900/50 border-transparent hover:border-indigo-400 dark:hover:border-indigo-500';
+                                }
+                                return <button key={option} onClick={() => handleAnswerSelect(option)} disabled={userAnswers[currentQuestionIndex] !== null} className={buttonClass}>{option}</button>
+                            })}
                         </div>
                         <div className="mt-8 text-right">
-                            <button onClick={handleNext} disabled={!userAnswers[currentQuestionIndex]}
-                                className="gradient-button px-10 py-3 rounded-lg font-semibold disabled:opacity-50">
+                             <button onClick={() => handleNext()} disabled={userAnswers[currentQuestionIndex] === null}
+                                className="gradient-button px-10 py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-opacity">
                                 {currentQuestionIndex < activeQuizData.questions.length - 1 ? 'Next' : 'Finish'} <i className="fa-solid fa-arrow-right ml-2"></i>
                             </button>
                         </div>
@@ -2484,47 +2357,31 @@
         }
 
         if (view === 'quiz_config') {
-            const questionOptions = [10, 20, 30, 50];
+            const questionOptions = [10, 20, 30, 50]; // Changed options
             return (
-                <Section title="Configure Mixed Quiz" subtitle="How many questions would you like?">
+                <Section title={`Configure Mixed ${activeSubject} Quiz`} subtitle="How many questions would you like?">
                     <div className="max-w-xl mx-auto text-center">
                         <div className="bg-white dark:bg-slate-800 p-6 grid grid-cols-2 gap-4 rounded-lg shadow-lg">
-                            {questionOptions.map(num =>
-                                <button key={num} onClick={() => startQuiz(generateMixedScienceQuiz(num))}
-                                    className="gradient-button text-xl font-bold p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow">
-                                    {num}<span className="block text-sm font-semibold opacity-80">Questions</span>
-                                </button>
-                            )}
+                            {questionOptions.map(num => <button key={num} onClick={() => startQuiz(generateMixedQuiz(activeSubject, num))} className="gradient-button text-xl font-bold p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow">{num}<span className="block text-sm font-semibold opacity-80">Questions</span></button> )}
                         </div>
-                        <button onClick={() => setView('chapter_select')} className="mt-8 text-sm font-semibold text-slate-500 hover:text-indigo-500">
-                            <i className="fa-solid fa-arrow-left mr-2"></i>Back to Chapters
-                        </button>
+                        <button onClick={() => setView('chapter_select')} className="mt-8 text-sm font-semibold text-slate-500 hover:text-indigo-500"> <i className="fa-solid fa-arrow-left mr-2"></i>Back to Chapters </button>
                     </div>
                 </Section>
             );
         }
 
         if (view === 'chapter_select') {
-            const scienceChapters = DATA.quizzes.Science.chapters;
+            const subjectData = DATA.quizzes[activeSubject];
             return (
-                <Section title="Science Quizzes" subtitle="Choose a chapter or try a mix of all chapters.">
-                    <div className="max-w-xl mx-auto">
-                        <button onClick={() => setView('quiz_config')} className="w-full gradient-button text-lg font-semibold p-6 rounded-xl mb-6 shadow-lg hover:shadow-2xl transition-shadow text-left flex justify-between items-center">
-                            <span><i className="fa-solid fa-random mr-3"></i>Mixed Chapter Quiz</span>
-                            <i className="fa-solid fa-arrow-right"></i>
-                        </button>
+                <Section title={`${activeSubject} Quizzes`} subtitle="Choose a chapter or try a mix of all chapters.">
+                    <div className="max-w-2xl mx-auto">
+                        <button onClick={() => setView('quiz_config')} className="w-full gradient-button text-lg font-semibold p-6 rounded-xl mb-6 shadow-lg hover:shadow-2xl transition-shadow text-left flex justify-between items-center"> <span><i className="fa-solid fa-random mr-3"></i>Mixed Chapter Quiz</span> <i className="fa-solid fa-arrow-right"></i> </button>
                         <div className="bg-white dark:bg-slate-800 p-6 space-y-3 rounded-lg shadow-lg">
-                            {Object.entries(scienceChapters).map(([chapterTitle, chapterData]) => (
-                                <button key={chapterTitle} onClick={() => startQuiz({ title: chapterTitle, questions: chapterData.questions })}
-                                    className="w-full text-left p-4 rounded-lg font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex justify-between items-center">
-                                    <span>{chapterTitle}</span>
-                                    <span className="text-xs font-semibold text-slate-500">{chapterData.questions.length} Questions</span>
-                                </button>
+                            {Object.entries(subjectData.chapters).map(([chapterTitle, chapterData]) => (
+                                <button key={chapterTitle} onClick={() => startQuiz({ title: chapterTitle, questions: chapterData.questions })} className="w-full text-left p-4 rounded-lg font-medium bg-slate-100 dark:bg-slate-900/50 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex justify-between items-center"> <span>{chapterTitle}</span> <span className="text-xs font-semibold text-slate-500">{chapterData.questions.length} Questions</span> </button>
                             ))}
                         </div>
-                        <button onClick={() => setView('subject_select')} className="mt-8 text-sm font-semibold text-slate-500 hover:text-indigo-500">
-                            <i className="fa-solid fa-arrow-left mr-2"></i>Back to Subjects
-                        </button>
+                        <button onClick={() => setView('subject_select')} className="mt-8 text-sm font-semibold text-slate-500 hover:text-indigo-500"> <i className="fa-solid fa-arrow-left mr-2"></i>Back to Subjects </button>
                     </div>
                 </Section>
             );
@@ -2534,23 +2391,17 @@
             <Section title="Test Your Knowledge" subtitle="Select a subject to start a quick quiz and check your preparation.">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {Object.entries(DATA.quizzes).map(([subject, quizMeta]) => (
-                        <div key={subject} className="bg-white dark:bg-slate-800 p-6 text-center rounded-lg shadow-lg animate-slideInUp">
-                            <div className="h-16 w-16 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/40 grid place-items-center text-indigo-500 text-3xl mb-4">
-                                <i className={quizMeta.icon}></i>
-                            </div>
-                            <h3 className="font-serif text-xl font-semibold text-slate-800 dark:text-white">{subject}</h3>
-                            <p className="text-slate-500 dark:text-slate-400 mt-1 mb-6">{quizMeta.title}</p>
-                            <button onClick={() => { 'chapters' in quizMeta ? setView('chapter_select') : startQuiz(quizMeta) }}
-                                className="gradient-button w-full px-6 py-2.5 rounded-lg font-semibold">
-                                Start Quiz
-                            </button>
+                        <div key={subject} className="bg-white dark:bg-slate-800 p-6 text-center rounded-2xl shadow-lg animate-slideInUp card-hover flex flex-col">
+                            <div className="h-20 w-20 mx-auto rounded-full bg-gradient-to-br from-indigo-200 to-purple-200 dark:from-indigo-900/40 dark:to-purple-900/40 grid place-items-center text-indigo-500 text-4xl mb-4"> <i className={quizMeta.icon}></i> </div>
+                            <h3 className="font-serif text-2xl font-bold text-slate-800 dark:text-white">{subject}</h3>
+                            <p className="text-slate-500 dark:text-slate-400 mt-1 mb-6 flex-grow">{quizMeta.title}</p>
+                            <button onClick={() => { setActiveSubject(subject); setView('chapter_select'); }} className="gradient-button w-full px-6 py-3 rounded-lg font-semibold mt-auto"> Start Quiz </button>
                         </div>
                     ))}
                 </div>
             </Section>
         );
     };
-
 
     // --- The main, updated competition section component ---
     const QuizCompetitionSection = ({ isPremium, onSetUserName, unlockedAchievements, checkAndUnlockAchievement, onShowPremiumCert, onShowCompletionCert }) => {
@@ -2565,28 +2416,15 @@
         useEffect(() => {
             const storedUser = getJSONFromLocalStorage('quizHubUser', null);
             if (storedUser) {
-                setUser(storedUser);
-                const history = getJSONFromLocalStorage('userPodiumHistory', []);
-                const fourMonthsAgo = new Date(); fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4);
-                
+                setUser(storedUser); const history = getJSONFromLocalStorage('userPodiumHistory', []); const fourMonthsAgo = new Date(); fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4);
                 const recentHistory = history.filter(h => new Date(h.date) >= fourMonthsAgo);
                 const stats = recentHistory.reduce((acc, h) => { if (h.rank === 1) acc.first++; else if (h.rank === 2) acc.second++; else if (h.rank === 3) acc.third++; return acc; }, { first: 0, second: 0, third: 0 });
                 setPodiumStats(stats);
-                
                 if (stats.first + stats.second + stats.third >= 3) { checkAndUnlockAchievement('THREE_WINS'); }
-                
                 const seenResultKey = `seenCompResult_${DATA.competitionResults.date}`;
                 if (!localStorage.getItem(seenResultKey)) {
                     const winnerInfo = DATA.competitionResults.podium.find(p => p.symbol === storedUser.symbol);
-                    if (winnerInfo) {
-                        setShowWinnerCertificate(winnerInfo);
-                        localStorage.setItem(seenResultKey, 'true');
-                        const isAlreadyRecorded = history.some(h => h.date === DATA.competitionResults.date);
-                        if (!isAlreadyRecorded) {
-                            history.push({ date: DATA.competitionResults.date, rank: winnerInfo.rank, score: winnerInfo.score });
-                            localStorage.setItem('userPodiumHistory', JSON.stringify(history));
-                        }
-                    }
+                    if (winnerInfo) { setShowWinnerCertificate(winnerInfo); localStorage.setItem(seenResultKey, 'true'); const isAlreadyRecorded = history.some(h => h.date === DATA.competitionResults.date); if (!isAlreadyRecorded) { history.push({ date: DATA.competitionResults.date, rank: winnerInfo.rank, score: winnerInfo.score }); localStorage.setItem('userPodiumHistory', JSON.stringify(history)); } }
                 }
             } else { setShowModal(true); }
         }, []);
@@ -2595,8 +2433,6 @@
         useEffect(() => { const quizDays = [1, 3, 6]; const quizStartHour = 20; const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; const calculateQuizState = () => { const now = new Date(); const currentDay = now.getDay(); const currentHour = now.getHours(); for (const quizDay of quizDays) { if (currentDay === quizDay && currentHour >= quizStartHour) { setQuizStatus({ isActive: true, countdown: 'Live Now!', nextQuizDay: '' }); return; } } let nextQuizDate = new Date(now); nextQuizDate.setHours(quizStartHour, 0, 0, 0); let nextDay = -1; for (const quizDay of quizDays) { if (quizDay > currentDay || (quizDay === currentDay && currentHour < quizStartHour)) { nextDay = quizDay; break; } } if (nextDay !== -1) { nextQuizDate.setDate(now.getDate() + (nextDay - currentDay)); } else { nextDay = quizDays[0]; nextQuizDate.setDate(now.getDate() + (7 - currentDay + nextDay)); } const diff = nextQuizDate.getTime() - now.getTime(); const d = Math.floor(diff / (1000 * 60 * 60 * 24)); const h = Math.floor((diff / (1000 * 60 * 60)) % 24); const m = Math.floor((diff / 1000 / 60) % 60); const s = Math.floor((diff / 1000) % 60); setQuizStatus({ isActive: false, countdown: `${d}d:${h.toString().padStart(2,'0')}h:${m.toString().padStart(2,'0')}m:${s.toString().padStart(2,'0')}s`, nextQuizDay: dayNames[nextDay] }); }; calculateQuizState(); const timer = setInterval(calculateQuizState, 1000); return () => clearInterval(timer); }, []);
         const handleDownload = () => { if (!isPremium) { alert("This is a premium feature."); return; } const element = document.getElementById('results-to-download'); if (element) { html2canvas(element, { backgroundColor: '#111827', useCORS: true }).then(canvas => { const link = document.createElement('a'); link.download = `results-${DATA.competitionResults.date}.png`; link.href = canvas.toDataURL('image/png'); link.click(); }); } };
         const renderUserHighlight = (text) => `${text} <span class="text-yellow-400 font-bold">(You)</span>`;
-        
-        // Updated tabs array to include 'test'
         const TABS = ['quiz', 'results', 'leaderboard', 'achievements', 'test'];
 
         return (
@@ -2609,11 +2445,28 @@
                             {TABS.map(tab => (<button key={tab} onClick={() => setActiveTab(tab)} className={`capitalize px-4 py-2 md:px-8 md:py-3 font-semibold rounded-lg transition-all duration-300 ${activeTab === tab ? 'bg-indigo-600 text-white shadow' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700'}`}>{tab}</button>))}
                         </div>
                         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-4 md:p-8 animate-fadeIn">
-                            {activeTab === 'quiz' && ( <div className="text-center bg-gray-100 dark:bg-slate-800 p-8 rounded-xl"> <h2 className="text-2xl md:text-3xl font-bold mb-4 text-indigo-600 dark:text-indigo-400">Weekly Quiz Challenge</h2> {quizStatus.isActive ? ( <div> <p className="text-lg mb-6 text-green-600 dark:text-green-400 font-semibold animate-pulse">The quiz is LIVE now!</p> <a href="#" target="_blank" rel="noopener noreferrer" className="gradient-button inline-block text-white font-bold py-3 px-10 rounded-full shadow-lg text-lg uppercase tracking-wide"> Join Live Quiz </a> </div> ) : ( <div> <p className="text-lg mb-2">Next quiz on <span className="font-bold text-indigo-500 dark:text-indigo-400">{quizStatus.nextQuizDay} at 8 PM</span>.</p> <div className="font-mono text-4xl md:text-5xl font-bold tracking-tight text-gray-800 dark:text-gray-200 my-4"> {quizStatus.countdown} </div> <button disabled className="gradient-button inline-block text-white font-bold py-3 px-10 rounded-full shadow-lg text-lg uppercase tracking-wide opacity-50 cursor-not-allowed"> Quiz Locked </button> </div> )} </div> )}
+                           {activeTab === 'quiz' && ( 
+                                <div className="text-center bg-gradient-to-br from-gray-900 to-slate-800 p-8 md:p-12 rounded-2xl shadow-2xl border border-indigo-500/30">
+                                    <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-4 animate-fadeIn">Weekly Quiz Challenge</h2>
+                                    {quizStatus.isActive ? ( 
+                                        <div className="animate-popIn">
+                                            <p className="text-xl mb-6 text-green-400 font-semibold animate-pulse">The quiz is LIVE now!</p>
+                                            <a href="#" target="_blank" rel="noopener noreferrer" className="gradient-button inline-block text-white font-bold py-4 px-12 rounded-full shadow-lg text-lg uppercase tracking-wide transform hover:scale-105 transition-transform duration-300"> Join Live Quiz </a> 
+                                        </div> 
+                                    ) : ( 
+                                        <div className="animate-fadeIn">
+                                            <p className="text-lg text-slate-300 mb-2">Next quiz on <span className="font-bold text-indigo-400">{quizStatus.nextQuizDay} at 8 PM</span>.</p>
+                                            <div className="font-mono text-4xl md:text-6xl font-bold tracking-tight text-white my-6 bg-black/30 py-4 px-2 rounded-xl inline-block shadow-inner"> {quizStatus.countdown} </div>
+                                            <button disabled className="gradient-button inline-block text-white font-bold py-4 px-12 rounded-full shadow-lg text-lg uppercase tracking-wide opacity-50 cursor-not-allowed"> 
+                                                <i className="fas fa-lock mr-3"></i>Quiz Locked 
+                                            </button> 
+                                        </div> 
+                                    )} 
+                                </div> 
+                            )}
                             {activeTab === 'results' && (<div><div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4"><div><h2 className="text-2xl md:text-3xl font-bold text-indigo-600 dark:text-indigo-400">Latest Quiz Results</h2><p className="text-gray-500 dark:text-gray-400">Results for: {DATA.competitionResults.date}</p></div><button onClick={handleDownload} disabled={!isPremium} className="gradient-button text-white font-bold py-2 px-4 rounded-full shadow-md text-sm disabled:opacity-50 flex-shrink-0"><i className={`fas ${isPremium ? 'fa-download' : 'fa-lock'} mr-2`}></i> Download</button></div><div className="my-8 bg-gray-100 dark:bg-slate-800 rounded-2xl p-6"> <h3 className="text-2xl font-bold text-center text-indigo-600 dark:text-indigo-400 mb-4">Your Podium Stats (Last 4 Months)</h3> <div className="flex justify-around text-center"> <div className="px-2"><p className="text-4xl font-bold text-amber-500">{podiumStats.first}</p><p className="font-semibold text-gray-600 dark:text-gray-400">🏆 1st</p></div> <div className="px-2"><p className="text-4xl font-bold text-slate-500">{podiumStats.second}</p><p className="font-semibold text-gray-600 dark:text-gray-400">🥈 2nd</p></div> <div className="px-2"><p className="text-4xl font-bold text-orange-600">{podiumStats.third}</p><p className="font-semibold text-gray-600 dark:text-gray-400">🥉 3rd</p></div> </div> </div><div className="flex flex-col md:flex-row justify-center items-end gap-4 md:gap-8 mb-8 text-center">{DATA.competitionResults.podium.map(p => (<div key={p.rank} className={`p-4 rounded-xl card-hover ${p.rank === 1 ? 'order-first md:order-2' : p.rank === 2 ? 'order-2 md:order-1' : 'order-last md:order-3'}`}><span className="text-4xl">{p.medal}</span><img src={p.img} alt={p.name} className={`w-24 h-24 md:w-32 md:h-32 rounded-full mx-auto my-2 object-cover border-4 border-${p.color}-400 shadow-lg`}/><p className="font-bold text-lg" dangerouslySetInnerHTML={{__html: user?.symbol === p.symbol ? renderUserHighlight(p.name) : p.name}}></p><p className="text-gray-500 dark:text-gray-400">{p.symbol}</p><p className="text-gray-600 dark:text-gray-400">{p.score}</p></div>))}</div><div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-gray-100 dark:bg-slate-800"><tr><th className="p-3">Rank</th><th className="p-3">Name</th><th className="p-3">Symbol</th><th className="p-3">Score</th></tr></thead><tbody>{DATA.competitionResults.table.map(r => (<tr key={r.rank}><td className="p-3">{r.rank}</td><td className="p-3" dangerouslySetInnerHTML={{__html: user?.symbol === r.symbol ? renderUserHighlight(r.name) : r.name}}></td><td className="p-3">{r.symbol}</td><td className="p-3">{r.score}</td></tr>))}</tbody></table></div></div>)}
                             {activeTab === 'leaderboard' && (<div><h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-indigo-600 dark:text-indigo-400">All-Time Leaderboard</h2><div className="overflow-x-auto bg-gray-100 dark:bg-slate-800 rounded-xl p-4"><table className="w-full text-left table-auto"><thead className="border-b-2 border-gray-300 dark:border-slate-600"><tr><th className="p-3 font-bold uppercase text-sm">Rank</th><th className="p-3 font-bold uppercase text-sm">Name</th><th className="p-3 font-bold uppercase text-sm">Symbol</th><th className="p-3 font-bold uppercase text-sm text-right">Total XP</th></tr></thead><tbody>{DATA.leaderboardData.map((player) => (<tr key={player.rank} className={`border-b border-gray-200 dark:border-slate-700 transition-colors ${user?.symbol === player.symbol ? 'bg-yellow-100 dark:bg-yellow-900/40' : 'hover:bg-gray-200/50 dark:hover:bg-slate-700/50'}`}><td className="p-3 font-bold text-lg">{player.medal || player.rank}</td><td className="p-3 font-semibold">{player.name} {user?.symbol === player.symbol && <span className="text-yellow-500 font-bold text-xs ml-1">(You)</span>}</td><td className="p-3 font-mono text-sm text-gray-500 dark:text-gray-400">{player.symbol}</td><td className="p-3 font-bold text-right text-indigo-500 dark:text-indigo-400">{player.score.toLocaleString()}</td></tr>))}</tbody></table></div></div>)}
                             {activeTab === 'achievements' && (<div><h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-indigo-600 dark:text-indigo-400">Your Achievements</h2><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{Object.values(DATA.achievementsList).map(ach => { const isUnlocked = unlockedAchievements[ach.id]; return (<div key={ach.id} className={`p-6 rounded-2xl shadow-lg transition-all duration-300 ${isUnlocked ? 'bg-amber-100 dark:bg-amber-900/40 border-t-4 border-amber-400' : 'bg-gray-100 dark:bg-slate-800'}`}> <div className="flex items-center gap-4 mb-3"> <i className={`${ach.icon} text-3xl ${isUnlocked ? 'text-amber-500' : 'text-gray-400 dark:text-gray-500'}`}></i> <div> <h4 className={`text-xl font-bold ${isUnlocked ? 'text-amber-800 dark:text-amber-300' : 'text-gray-600 dark:text-gray-400'}`}>{ach.title}</h4> <p className="text-sm text-gray-500 dark:text-gray-500">{isUnlocked ? "Unlocked!" : "Locked"}</p> </div> </div> <p className="text-gray-600 dark:text-gray-400 mb-4">{ach.description}</p> {ach.hasCertificate && isUnlocked && ( <button onClick={ach.id === 'PREMIUM_USER' ? onShowPremiumCert : onShowCompletionCert} className="bg-amber-500 text-white font-bold py-1 px-3 rounded-full text-sm"> <i className="fas fa-download mr-1"></i> Certificate </button> )} </div>)})}</div></div>)}
-                            {/* Render the new Test section */}
                             {activeTab === 'test' && ( <PracticeTestComponent /> )}
                         </div>
                     </div> ) : ( <div className="text-center p-8 mt-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg"> <h2 className="text-3xl font-bold">Join the Competition!</h2> {error ? <p className="mt-2 text-red-500">{error.message}</p> : <p className="mt-2 text-gray-600 dark:text-gray-400">Log in with your details to participate in live quizzes and see your rank.</p>} <button onClick={() => setShowModal(true)} className="gradient-button text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg mt-6">Log In Now</button> </div> )}
@@ -2624,176 +2477,10 @@
     };
     
     const PremiumLockOverlay = ({ onStartTrial, onUnlock, hasUsedTrial, isTrialActive, timeLeft }) => { const formatTime = (ms) => { if (ms <= 0) return "00:00"; const totalSeconds = Math.floor(ms / 1000); const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0'); const seconds = (totalSeconds % 60).toString().padStart(2, '0'); return `${minutes}:${seconds}`; }; return ( <div className="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md z-20 flex flex-col justify-center items-center rounded-2xl p-4 text-center"> {isTrialActive ? ( <Fragment> <div className="animate-pulse flex items-center gap-3 text-2xl font-bold text-slate-800 dark:text-white mb-2"> <i className="fas fa-eye text-green-500"></i> Free Preview Active </div> <p className="text-slate-600 dark:text-slate-300 mb-4">Time Remaining:</p> <div className="font-mono text-4xl font-extrabold text-slate-900 dark:text-white tracking-wider">{formatTime(timeLeft)}</div> </Fragment> ) : ( <Fragment> <i className="fas fa-lock text-5xl text-amber-500 mb-4"></i> <h4 className="text-2xl font-bold text-slate-800 dark:text-white">Premium Content Locked</h4> <p className="text-slate-600 dark:text-slate-300 my-2 max-w-sm"> {hasUsedTrial ? "Your free preview has ended. Unlock permanently to get full access." : "Get a 15-minute free preview to explore all premium materials, or unlock them permanently." } </p> <div className="flex flex-col sm:flex-row gap-4 mt-4"> {!hasUsedTrial && ( <button onClick={onStartTrial} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition-transform hover:scale-105"> Start 15-Min Preview </button> )} <button onClick={onUnlock} className="gradient-button text-white font-bold py-2 px-6 rounded-full shadow-md"> Get Premium Access </button> </div> </Fragment> )} </div> ); };
-    const ResourcesSection = ({ isPremium, onPremiumUnlock, userName }) => {
-        const [searchTerm, setSearchTerm] = useState('');
-        const [activeTag, setActiveTag] = useState('all');
-        const [showPaymentModal, setShowPaymentModal] = useState(false);
-        const [pdfToView, setPdfToView] = useState(null);
-        const [trialState, setTrialState] = useState({ hasUsedTrial: false, isTrialActive: false, timeLeft: 0 });
-        const questionWhatsAppLink = `https://wa.me/${DATA.whatsAppContactNumber}?text=${encodeURIComponent(`Hello! I'm a premium member of the Balen Prep Portal and I have a question. My name is ${userName}.`)}`;
-        
-        useEffect(() => {
-            const hasUsed = getJSONFromLocalStorage('balenHasUsedTrial', false);
-            const endTime = getJSONFromLocalStorage('balenTrialEndTime', null);
-            let intervalId;
-            if (endTime && Date.now() < endTime) {
-                const updateTimer = () => {
-                    const remaining = endTime - Date.now();
-                    if (remaining > 0) {
-                        setTrialState({ hasUsedTrial: true, isTrialActive: true, timeLeft: remaining });
-                    } else {
-                        setTrialState({ hasUsedTrial: true, isTrialActive: false, timeLeft: 0 });
-                        localStorage.removeItem('balenTrialEndTime');
-                        clearInterval(intervalId);
-                    }
-                };
-                updateTimer();
-                intervalId = setInterval(updateTimer, 1000);
-            } else {
-                setTrialState({ hasUsedTrial: hasUsed, isTrialActive: false, timeLeft: 0 });
-            }
-            return () => clearInterval(intervalId);
-        }, []);
-
-        const handleStartTrial = () => {
-            const FIFTEEN_MINUTES_MS = 15 * 60 * 1000;
-            const endTime = Date.now() + FIFTEEN_MINUTES_MS;
-            localStorage.setItem('balenHasUsedTrial', JSON.stringify(true));
-            localStorage.setItem('balenTrialEndTime', JSON.stringify(endTime));
-            window.location.reload();
-        };
-
-        const allTags = useMemo(() => {
-            const tags = new Set();
-            DATA.resources.forEach(cat => cat.items.forEach(item => item.tags.forEach(tag => tags.add(tag))));
-            return ['all', ...Array.from(tags).sort()];
-        }, []);
-
-        const filteredResources = useMemo(() => {
-            return DATA.resources.map(category => ({
-                ...category,
-                items: category.items.filter(item => {
-                    const matchesTag = activeTag === 'all' || item.tags.includes(activeTag);
-                    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
-                    return matchesTag && matchesSearch;
-                })
-            })).filter(category => category.items.length > 0);
-        }, [searchTerm, activeTag]);
-
-        const getEmbedUrl = (url) => {
-            if (!url) return null;
-            const fileIdMatch = url.match(/drive\.google\.com\/(?:file\/d\/|drive\/folders\/)([a-zA-Z0-9_-]+)/);
-            if (url.includes('/folders/')) return null;
-            return fileIdMatch ? `https://drive.google.com/file/d/${fileIdMatch[1]}/preview` : null;
-        };
-
-        return (
-            <section id="resources" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800">
-                {pdfToView && <PdfViewerModal pdfInfo={pdfToView} onClose={() => setPdfToView(null)} />}
-                {showPaymentModal && <PaymentModal onPaymentSuccess={onPremiumUnlock} onClose={() => setShowPaymentModal(false)} userName={userName}/>}
-                <div className="container mx-auto">
-                    <h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-4 animate-fadeIn">Study Resources</h2>
-                    <p className="text-center text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">Your complete library for exam success.</p>
-                    
-                    {!isPremium ? (
-                         <div className="text-center bg-gradient-to-r from-orange-500 to-amber-400 text-white p-6 rounded-2xl shadow-xl animate-popIn"><h4 className="text-3xl md:text-4xl font-extrabold mb-2">Unlock Your Full Potential!</h4><div className="max-w-2xl mx-auto mt-4 text-left space-y-2 px-4"><p className="flex items-start"><i className="fas fa-check-circle text-green-300 mt-1 mr-3"></i><span><strong>Full Access:</strong> Get all exclusive books, notes, and past papers.</span></p><p className="flex items-start"><i className="fas fa-check-circle text-green-300 mt-1 mr-3"></i><span><strong>Unlimited Quizzes:</strong> Unlock all premium quizzes instantly.</span></p><p className="flex items-start"><i className="fas fa-check-circle text-green-300 mt-1 mr-3"></i><span><strong>Downloadable Content:</strong> Download competition results and certificates.</span></p><p className="flex items-start"><i className="fas fa-check-circle text-green-300 mt-1 mr-3"></i><span><strong>One-Time Payment:</strong> Pay once, enjoy lifetime access.</span></p></div><div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6"><a href={DATA.premiumInfoVideoLink} target="_blank" rel="noopener noreferrer" className="bg-white text-blue-700 font-bold py-3 px-8 rounded-full shadow-lg text-lg uppercase tracking-wide hover:bg-gray-100 transition-colors duration-300">What is this? <i className="fab fa-youtube ml-2"></i></a><button onClick={() => setShowPaymentModal(true)} className="gradient-button inline-block text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg uppercase tracking-wide">Get Premium Now <i className="fas fa-key ml-2"></i></button></div></div>
-                    ) : (
-                        <div className="text-center bg-gradient-to-r from-green-500 to-emerald-400 text-white p-6 rounded-2xl shadow-xl animate-popIn"><h4 className="text-3xl md:text-4xl font-extrabold mb-2">Premium Access Activated!</h4><p className="max-w-2xl mx-auto mt-4">You have full access to all resources. If you have any questions, feel free to reach out.</p><a href={questionWhatsAppLink} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-white text-green-700 font-bold py-3 px-8 rounded-full shadow-lg text-lg uppercase tracking-wide hover:bg-gray-100 transition-colors duration-300">Ask a Question <i className="fab fa-whatsapp ml-2"></i></a></div>
-                    )}
-
-                    <div className="sticky top-[80px] z-40 bg-gray-50/80 dark:bg-slate-800/80 backdrop-blur-sm p-4 my-8 rounded-xl shadow-md">
-                        <div className="flex flex-col md:flex-row gap-4">
-                            <div className="relative flex-grow">
-                                <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" placeholder="Search resources..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
-                            </div>
-                            <div className="flex-shrink-0 flex items-center gap-2 overflow-x-auto pb-2">
-                                {allTags.map(tag => (
-                                    <button key={tag} onClick={() => setActiveTag(tag)} className={`px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap transition-all ${activeTag === tag ? 'bg-indigo-600 text-white shadow' : 'bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600'}`}>
-                                        {tag.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {filteredResources.length > 0 ? filteredResources.map((cat, idx) => {
-                        const isPremiumCategory = cat.category === "Premium Materials";
-                        const isLocked = !isPremium && isPremiumCategory && !trialState.isTrialActive;
-                        return (
-                            <div key={idx} className="mb-12">
-                                <h3 className="text-3xl font-bold text-indigo-700 dark:text-indigo-300 mb-6 border-b-2 border-indigo-200 dark:border-indigo-800 pb-2">{cat.category}</h3>
-                                <div className="relative">
-                                    {isLocked && <PremiumLockOverlay onStartTrial={handleStartTrial} onUnlock={() => setShowPaymentModal(true)} hasUsedTrial={trialState.hasUsedTrial} isTrialActive={trialState.isTrialActive} timeLeft={trialState.timeLeft} />}
-                                    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${isLocked ? 'blur-sm pointer-events-none' : ''}`}>
-                                        {cat.items.map((item, j) => {
-                                            const isViewable = !!getEmbedUrl(item.link);
-                                            
-                                            return (
-                                                <div key={j} className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp" style={{animationDelay: `${j * 50}ms`}}>
-                                                    <h4 className="flex items-start text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                                        <i className={`${getIconForResource(item.tags)} mr-3 text-indigo-400 mt-1`}></i>
-                                                        <span>{item.title}</span>
-                                                    </h4>
-                                                    
-                                                    {isViewable ? (
-                                                        <button 
-                                                            onClick={() => setPdfToView({ url: item.link, title: item.title })} 
-                                                            className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md text-sm"
-                                                            disabled={isLocked}
-                                                        >
-                                                            View Securely <i className="fas fa-eye ml-2"></i>
-                                                        </button>
-                                                    ) : (
-                                                        <a 
-                                                            href={item.link} 
-                                                            target="_blank" 
-                                                            rel="noopener noreferrer" 
-                                                            className="inline-block gradient-button text-white font-bold py-2 px-4 rounded-full shadow-md text-sm"
-                                                        >
-                                                            Access / Download <i className="fas fa-external-link-alt ml-2"></i>
-                                                        </a>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    }) : (
-                        <div className="text-center py-16">
-                            <p className="text-2xl font-bold">No resources found.</p>
-                            <p className="text-gray-500 mt-2">Try adjusting your search or filter.</p>
-                        </div>
-                    )}
-                </div>
-            </section>
-        );
-    };
+    const ResourcesSection = ({ isPremium, onPremiumUnlock, userName }) => { const [searchTerm, setSearchTerm] = useState(''); const [activeTag, setActiveTag] = useState('all'); const [showPaymentModal, setShowPaymentModal] = useState(false); const [pdfToView, setPdfToView] = useState(null); const [trialState, setTrialState] = useState({ hasUsedTrial: false, isTrialActive: false, timeLeft: 0 }); const questionWhatsAppLink = `https://wa.me/${DATA.whatsAppContactNumber}?text=${encodeURIComponent(`Hello! I'm a premium member of the Balen Prep Portal and I have a question. My name is ${userName}.`)}`; useEffect(() => { const hasUsed = getJSONFromLocalStorage('balenHasUsedTrial', false); const endTime = getJSONFromLocalStorage('balenTrialEndTime', null); let intervalId; if (endTime && Date.now() < endTime) { const updateTimer = () => { const remaining = endTime - Date.now(); if (remaining > 0) { setTrialState({ hasUsedTrial: true, isTrialActive: true, timeLeft: remaining }); } else { setTrialState({ hasUsedTrial: true, isTrialActive: false, timeLeft: 0 }); localStorage.removeItem('balenTrialEndTime'); clearInterval(intervalId); } }; updateTimer(); intervalId = setInterval(updateTimer, 1000); } else { setTrialState({ hasUsedTrial: hasUsed, isTrialActive: false, timeLeft: 0 }); } return () => clearInterval(intervalId); }, []); const handleStartTrial = () => { const FIFTEEN_MINUTES_MS = 15 * 60 * 1000; const endTime = Date.now() + FIFTEEN_MINUTES_MS; localStorage.setItem('balenHasUsedTrial', JSON.stringify(true)); localStorage.setItem('balenTrialEndTime', JSON.stringify(endTime)); window.location.reload(); }; const allTags = useMemo(() => { const tags = new Set(); DATA.resources.forEach(cat => cat.items.forEach(item => item.tags.forEach(tag => tags.add(tag)))); return ['all', ...Array.from(tags).sort()]; }, []); const filteredResources = useMemo(() => { return DATA.resources.map(category => ({ ...category, items: category.items.filter(item => { const matchesTag = activeTag === 'all' || item.tags.includes(activeTag); const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()); return matchesTag && matchesSearch; }) })).filter(category => category.items.length > 0); }, [searchTerm, activeTag]); const getEmbedUrl = (url) => { if (!url) return null; const fileIdMatch = url.match(/drive\.google\.com\/(?:file\/d\/|drive\/folders\/)([a-zA-Z0-9_-]+)/); if (url.includes('/folders/')) return null; return fileIdMatch ? `https://drive.google.com/file/d/${fileIdMatch[1]}/preview` : null; }; return ( <section id="resources" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800"> {pdfToView && <PdfViewerModal pdfInfo={pdfToView} onClose={() => setPdfToView(null)} />} {showPaymentModal && <PaymentModal onPaymentSuccess={onPremiumUnlock} onClose={() => setShowPaymentModal(false)} userName={userName}/>} <div className="container mx-auto"> <h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-4 animate-fadeIn">Study Resources</h2> <p className="text-center text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">Your complete library for exam success.</p> {!isPremium ? ( <div className="text-center bg-gradient-to-r from-orange-500 to-amber-400 text-white p-6 rounded-2xl shadow-xl animate-popIn"><h4 className="text-3xl md:text-4xl font-extrabold mb-2">Unlock Your Full Potential!</h4><div className="max-w-2xl mx-auto mt-4 text-left space-y-2 px-4"><p className="flex items-start"><i className="fas fa-check-circle text-green-300 mt-1 mr-3"></i><span><strong>Full Access:</strong> Get all exclusive books, notes, and past papers.</span></p><p className="flex items-start"><i className="fas fa-check-circle text-green-300 mt-1 mr-3"></i><span><strong>Unlimited Quizzes:</strong> Unlock all premium quizzes instantly.</span></p><p className="flex items-start"><i className="fas fa-check-circle text-green-300 mt-1 mr-3"></i><span><strong>Downloadable Content:</strong> Download competition results and certificates.</span></p><p className="flex items-start"><i className="fas fa-check-circle text-green-300 mt-1 mr-3"></i><span><strong>One-Time Payment:</strong> Pay once, enjoy lifetime access.</span></p></div><div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6"><a href={DATA.premiumInfoVideoLink} target="_blank" rel="noopener noreferrer" className="bg-white text-blue-700 font-bold py-3 px-8 rounded-full shadow-lg text-lg uppercase tracking-wide hover:bg-gray-100 transition-colors duration-300">What is this? <i className="fab fa-youtube ml-2"></i></a><button onClick={() => setShowPaymentModal(true)} className="gradient-button inline-block text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg uppercase tracking-wide">Get Premium Now <i className="fas fa-key ml-2"></i></button></div></div> ) : ( <div className="text-center bg-gradient-to-r from-green-500 to-emerald-400 text-white p-6 rounded-2xl shadow-xl animate-popIn"><h4 className="text-3xl md:text-4xl font-extrabold mb-2">Premium Access Activated!</h4><p className="max-w-2xl mx-auto mt-4">You have full access to all resources. If you have any questions, feel free to reach out.</p><a href={questionWhatsAppLink} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-white text-green-700 font-bold py-3 px-8 rounded-full shadow-lg text-lg uppercase tracking-wide hover:bg-gray-100 transition-colors duration-300">Ask a Question <i className="fab fa-whatsapp ml-2"></i></a></div> )} <div className="sticky top-[80px] z-40 bg-gray-50/80 dark:bg-slate-800/80 backdrop-blur-sm p-4 my-8 rounded-xl shadow-md"> <div className="flex flex-col md:flex-row gap-4"> <div className="relative flex-grow"> <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i> <input type="text" placeholder="Search resources..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" /> </div> <div className="flex-shrink-0 flex items-center gap-2 overflow-x-auto pb-2"> {allTags.map(tag => ( <button key={tag} onClick={() => setActiveTag(tag)} className={`px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap transition-all ${activeTag === tag ? 'bg-indigo-600 text-white shadow' : 'bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600'}`}> {tag.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())} </button> ))} </div> </div> </div> {filteredResources.length > 0 ? filteredResources.map((cat, idx) => { const isPremiumCategory = cat.category === "Premium Materials"; const isLocked = !isPremium && isPremiumCategory && !trialState.isTrialActive; return ( <div key={idx} className="mb-12"> <h3 className="text-3xl font-bold text-indigo-700 dark:text-indigo-300 mb-6 border-b-2 border-indigo-200 dark:border-indigo-800 pb-2">{cat.category}</h3> <div className="relative"> {isLocked && <PremiumLockOverlay onStartTrial={handleStartTrial} onUnlock={() => setShowPaymentModal(true)} hasUsedTrial={trialState.hasUsedTrial} isTrialActive={trialState.isTrialActive} timeLeft={trialState.timeLeft} />} <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${isLocked ? 'blur-sm pointer-events-none' : ''}`}> {cat.items.map((item, j) => { const isViewable = !!getEmbedUrl(item.link); return ( <div key={j} className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp" style={{animationDelay: `${j * 50}ms`}}> <h4 className="flex items-start text-xl font-semibold text-gray-900 dark:text-white mb-4"> <i className={`${getIconForResource(item.tags)} mr-3 text-indigo-400 mt-1`}></i> <span>{item.title}</span> </h4> {isViewable ? ( <button onClick={() => setPdfToView({ url: item.link, title: item.title })} className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md text-sm" disabled={isLocked} > View Securely <i className="fas fa-eye ml-2"></i> </button> ) : ( <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-block gradient-button text-white font-bold py-2 px-4 rounded-full shadow-md text-sm" > Access / Download <i className="fas fa-external-link-alt ml-2"></i> </a> )} </div> ); })} </div> </div> </div> ) }) : ( <div className="text-center py-16"> <p className="text-2xl font-bold">No resources found.</p> <p className="text-gray-500 mt-2">Try adjusting your search or filter.</p> </div> )} </div> </section> ); };
     const VideosSection = () => ( <section id="videos" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800"><div className="container mx-auto"><h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-10 animate-fadeIn">Informative Videos</h2><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{DATA.videos.map((video, idx) => (<div key={idx} className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg card-hover animate-slideInUp" style={{animationDelay: `${idx*100}ms`}}><h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 flex items-start"><i className="fab fa-youtube text-red-500 mr-3 mt-1"></i><span>{video.title}</span></h3><a href={video.link} target="_blank" rel="noopener noreferrer" className="inline-block gradient-button text-white font-bold py-2 px-4 rounded-full shadow-md text-sm">Watch Video <i className="fas fa-play-circle ml-2"></i></a></div>))}</div></div></section> );
     const NoticeSection = ({ onAcknowledgeNotice }) => { useEffect(() => { onAcknowledgeNotice(); }, []); const typeColors = { Announcement: "border-blue-500", Update: "border-green-500", Important: "border-red-500" }; const typeIcons = { Announcement: "fas fa-bullhorn text-blue-500", Update: "fas fa-info-circle text-green-500", Important: "fas fa-exclamation-triangle text-red-500" }; return ( <section id="notices" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800"><div className="container mx-auto"><h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-10 animate-fadeIn">Portal Notices</h2><div className="space-y-6 max-w-4xl mx-auto">{DATA.notices.filter(n => !n.isCompulsory).map((notice, index) => (<div key={notice.id} className={`bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg border-l-4 card-hover animate-slideInUp ${typeColors[notice.type] || 'border-gray-500'}`} style={{ animationDelay: `${index * 100}ms` }}><div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2"><div className="flex items-center gap-3"><i className={`${typeIcons[notice.type] || 'fas fa-info-circle'} text-xl`}></i><h3 className="text-xl font-bold">{notice.title}</h3></div><p className="text-sm font-semibold text-gray-500 dark:text-gray-400 mt-2 sm:mt-0">{notice.date}</p></div><p className="mt-2 text-base leading-relaxed text-gray-600 dark:text-gray-300" dangerouslySetInnerHTML={{__html: notice.content}}></p></div>))}</div></div></section> ); };
-    const FAQsSection = () => {
-        const [open, setOpen] = useState(null);
-        const [searchTerm, setSearchTerm] = useState('');
-        const filteredFaqs = useMemo(() => {
-            if (!searchTerm.trim()) return DATA.faqs;
-            const lowercasedFilter = searchTerm.toLowerCase();
-            return DATA.faqs.map(category => ({
-                ...category,
-                items: category.items.filter(item => {
-                    const questionMatches = item.question.toLowerCase().includes(lowercasedFilter);
-                    let answerMatches = false;
-                    if (typeof item.answer === 'string') {
-                        answerMatches = item.answer.toLowerCase().includes(lowercasedFilter);
-                    }
-                    return questionMatches || answerMatches;
-                })
-            })).filter(category => category.items.length > 0);
-        }, [searchTerm]);
-
-        return ( <section id="faqs" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800"><div className="container mx-auto"><h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-10 animate-fadeIn">Frequently Asked Questions</h2><div className="max-w-4xl mx-auto mb-8 relative"><i className="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="text" placeholder="Search for a question..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition" /></div>{filteredFaqs.length > 0 ? filteredFaqs.map((cat, ci) => (<div key={ci} className="mb-8 max-w-4xl mx-auto"><h3 className="text-3xl font-bold text-indigo-700 dark:text-indigo-300 mb-6 border-b-2 border-indigo-200 dark:border-indigo-800 pb-2">{cat.category}</h3><div className="space-y-4">{cat.items.map((f, fi) => (<div key={fi} className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg card-hover"><button className="flex justify-between items-center w-full text-left text-lg font-semibold text-gray-900 dark:text-white p-6" onClick={() => setOpen(open === `${ci}-${fi}` ? null : `${ci}-${fi}`)}><span>{f.question}</span><i className={`fas ${open === `${ci}-${fi}` ? 'fa-chevron-up' : 'fa-chevron-down'} text-indigo-500 transition-transform duration-300`}></i></button>{open === `${ci}-${fi}` && (<div className="px-6 pb-6 text-gray-700 dark:text-gray-300 leading-relaxed animate-fadeIn">{f.answer}</div>)}</div>))}</div></div>)) : (<div className="text-center py-10 max-w-4xl mx-auto"><p className="text-xl font-semibold text-gray-700 dark:text-gray-300">No questions found matching your search.</p><p className="text-gray-500 mt-2">Please try a different keyword.</p></div>)}</div></section> );
-    };
+    const FAQsSection = () => { const [open, setOpen] = useState(null); const [searchTerm, setSearchTerm] = useState(''); const filteredFaqs = useMemo(() => { if (!searchTerm.trim()) return DATA.faqs; const lowercasedFilter = searchTerm.toLowerCase(); return DATA.faqs.map(category => ({ ...category, items: category.items.filter(item => { const questionMatches = item.question.toLowerCase().includes(lowercasedFilter); let answerMatches = false; if (typeof item.answer === 'string') { answerMatches = item.answer.toLowerCase().includes(lowercasedFilter); } return questionMatches || answerMatches; }) })).filter(category => category.items.length > 0); }, [searchTerm]); return ( <section id="faqs" className="py-12 px-4 md:px-8 bg-gray-50 dark:bg-slate-800"><div className="container mx-auto"><h2 className="text-4xl font-extrabold text-center text-red-500 dark:text-red-400 mb-10 animate-fadeIn">Frequently Asked Questions</h2><div className="max-w-4xl mx-auto mb-8 relative"><i className="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="text" placeholder="Search for a question..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition" /></div>{filteredFaqs.length > 0 ? filteredFaqs.map((cat, ci) => (<div key={ci} className="mb-8 max-w-4xl mx-auto"><h3 className="text-3xl font-bold text-indigo-700 dark:text-indigo-300 mb-6 border-b-2 border-indigo-200 dark:border-indigo-800 pb-2">{cat.category}</h3><div className="space-y-4">{cat.items.map((f, fi) => (<div key={fi} className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg card-hover"><button className="flex justify-between items-center w-full text-left text-lg font-semibold text-gray-900 dark:text-white p-6" onClick={() => setOpen(open === `${ci}-${fi}` ? null : `${ci}-${fi}`)}><span>{f.question}</span><i className={`fas ${open === `${ci}-${fi}` ? 'fa-chevron-up' : 'fa-chevron-down'} text-indigo-500 transition-transform duration-300`}></i></button>{open === `${ci}-${fi}` && (<div className="px-6 pb-6 text-gray-700 dark:text-gray-300 leading-relaxed animate-fadeIn">{f.answer}</div>)}</div>))}</div></div>)) : (<div className="text-center py-10 max-w-4xl mx-auto"><p className="text-xl font-semibold text-gray-700 dark:text-gray-300">No questions found matching your search.</p><p className="text-gray-500 mt-2">Please try a different keyword.</p></div>)}</div></section> ); };
     const PremiumCertificate = ({ userName, onDownload }) => { const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); const fixedLogoUrl = "https://i.ibb.co/3zdP15p/balen-logo-final.jpg"; return ( <div className="overlay"> <div className="modal-box bg-white dark:bg-slate-900 max-w-3xl w-full p-2 md:p-4"> <div id="certificate" className="bg-slate-900 text-gray-200 p-8 rounded-lg relative overflow-hidden shadow-2xl border-2 border-amber-400/30"> <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.1)_0%,_rgba(255,255,255,0)_70%)]"></div> <div className="relative z-10"> <div className="flex justify-between items-center pb-4 border-b-2 border-amber-400/50"> <div className="flex items-center gap-4"> <img src={fixedLogoUrl} alt="Portal Logo" className="h-16 w-16 rounded-full object-cover border-2 border-amber-300" /> <div> <h2 className="font-bold text-xl text-white tracking-wide">Balen Scholarship</h2> <p className="text-sm text-gray-400">Official Prep Portal</p> </div> </div> <div className="text-right"> <i className="fas fa-star text-3xl text-amber-400"></i> <p className="font-semibold text-amber-400 uppercase tracking-wider text-sm mt-1">Premium Member</p> </div> </div> <div className="text-center my-12"> <p className="text-lg text-gray-400">This certifies that</p> <h1 className="font-serif text-5xl md:text-6xl font-extrabold my-4 text-white"> {userName} </h1> <p className="text-lg text-gray-300">has been granted full <span className="font-bold text-amber-400">Premium Access</span> to all exclusive resources, quizzes, and features of the portal.</p> </div> <div className="flex justify-between items-end mt-12 pt-4 border-t-2 border-amber-400/50"> <div className="text-left"> <svg className="w-24 h-24 p-1 bg-white rounded-md" viewBox="0 0 256 256"> <path d="M128 256a128 128 0 100-256 128 128 0 000 256zM88 64v32H56V64h32zm112 0v32h-32V64h32zM88 128v-32H56v32h32zm32-32v32h-32v-32h32zm80 0v32h-32v-32h32zm-80 80v-32h-32v32h32zm-32-32v32H56v-32h32zm112 32v-32h-32v32h32zM88 192v-32H56v32h32zm32 0v32H88v-32h32zm-32 32v32H56v-32h32zm80-80v-32h-32v32h32zm-32 32v32h-32v-32h32zm32 32v-32h-32v32h32z" fill="#334155"/> </svg> <p className="text-xs text-gray-500 mt-1">Verification ID: BS-P-{userName.slice(0,2).toUpperCase()}2024</p> </div> <div className="text-center"> <p className="font-script text-4xl text-gray-100">Ganesh Dahal</p> <hr className="w-full border-t border-amber-400/50 mt-1" /> <p className="text-sm text-gray-400 mt-1">Portal Creator</p> <p className="text-xs text-gray-500">Issued on: {date}</p> </div> </div> </div> </div> <div className="text-center"> <button onClick={onDownload} className="gradient-button text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg mt-6">Download Certificate</button> </div> </div> </div> ); };
     const CompletionCertificate = ({ userName, onDownload }) => { const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); const fixedLogoUrl = "https://i.ibb.co/3zdP15p/balen-logo-final.jpg"; const goldSealUrl = "https://i.ibb.co/T0f0d3j/gold-seal-embossed.png"; return ( <div className="overlay"> <div className="modal-box bg-white dark:bg-slate-900 max-w-5xl w-full p-6 md:p-10"> <div id="completion-certificate" className="relative bg-white text-slate-800 px-12 py-16 shadow-2xl overflow-hidden font-serif rounded-lg"> <div className="absolute inset-0 z-0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="none" className="w-full h-full"> <path d="M0,120 C300,240 900,0 1200,120 L1200,800 L0,800 Z" fill="#ff7e29" opacity="0.85" /> <path d="M0,240 C300,360 900,120 1200,240 L1200,800 L0,800 Z" fill="#ffa31a" opacity="0.85" /> </svg> </div> <div className="relative z-10 text-center flex flex-col items-center space-y-6"> <img src={fixedLogoUrl} alt="Logo" className="h-24 w-24 rounded-full object-cover border-4 border-white shadow-md" /> <h1 className="font-serif text-4xl md:text-5xl font-bold text-slate-900 tracking-wider uppercase"> Certificate of Completion </h1> <p className="text-lg md:text-xl text-slate-600 font-sans"> Balen Scholarship Preparatory Program </p> <p className="mt-6 text-xl text-slate-600 font-sans italic"> This acknowledges that </p> <p className="font-[cursive] text-5xl md:text-7xl font-bold text-slate-900 tracking-wide leading-tight break-words px-4"> {userName} </p> <div className="max-w-3xl mx-auto text-center font-sans text-base md:text-lg text-slate-700 leading-relaxed px-4"> <p> has successfully completed the <strong>Balen Scholarship Preparatory Program</strong>. </p> <p className="mt-3"> Your dedication, perseverance, and commitment to learning are highly commendable. May this achievement inspire greater success in the future. </p> </div> <div className="flex flex-col md:flex-row justify-between items-center mt-14 w-full max-w-4xl mx-auto gap-y-10 md:gap-y-0"> <div className="text-center"> <p className="font-[cursive] text-3xl md:text-4xl text-slate-900 -mb-1">Ganesh Dahal</p> <hr className="w-52 md:w-64 border-t-2 border-slate-500/70 mx-auto" /> <p className="text-sm text-slate-600 mt-1 font-sans tracking-widest">PROGRAM DIRECTOR</p> </div> <div className="text-center"> <p className="font-sans font-semibold text-base md:text-lg text-slate-800">{date}</p> <hr className="w-52 md:w-64 border-t-2 border-slate-500/70 mx-auto" /> <p className="text-sm text-slate-600 mt-1 font-sans tracking-widest">AWARDED ON</p> </div> </div> <img src={goldSealUrl} alt="Official Seal" className="absolute bottom-10 right-10 w-28 md:w-32 h-28 md:h-32 z-20 drop-shadow-xl" /> </div> </div> <div className="text-center"> <button onClick={() => onDownload('completion-certificate')} className="bg-gradient-to-r from-orange-600 to-yellow-500 text-white font-bold py-3 px-10 rounded-full shadow-lg text-lg mt-6 hover:scale-105 transition-transform" > Download Certificate </button> </div> </div> </div> ); };
     
@@ -2857,8 +2544,6 @@
                         const newStats = { ...prev, streak: newStreak };
                         localStorage.setItem('balenUserStats', JSON.stringify(newStats));
                         if (newStreak >= 7) checkAndUnlockAchievement('STREAK_7');
-                        if (newStreak >= 14) checkAndUnlockAchievement('STREAK_14');
-                        if (newStreak >= 30) checkAndUnlockAchievement('STREAK_30');
                         let unlockedByStreak = 0; for (const day in DATA.STREAK_UNLOCKS) { if (newStreak >= parseInt(day, 10)) { unlockedByStreak = Math.max(unlockedByStreak, DATA.STREAK_UNLOCKS[day]); } }
                         const currentUnlocks = getJSONFromLocalStorage('balenQuizUnlocks', {});
                         localStorage.setItem('balenQuizUnlocks', JSON.stringify({...currentUnlocks, unlockedByStreak, dailyUnlocks: 0}));
